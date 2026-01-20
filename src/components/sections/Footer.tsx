@@ -1,26 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Twitter, Send, MessageCircle, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import logo from "@/assets/kols3-logo.png";
+import { useTheme } from "@/components/ThemeProvider";
 
 const footerLinks = {
   company: [
-    { label: "About", href: "#" },
-    { label: "Careers", href: "#" },
-    { label: "Press", href: "#" },
-    { label: "Contact", href: "#contact" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
   ],
   services: [
-    { label: "KOL Campaigns", href: "#services" },
-    { label: "Ambassador Programs", href: "#services" },
-    { label: "Campus Programs", href: "#services" },
-    { label: "Events", href: "#services" },
+    { label: "KOL Campaigns", href: "/kol-campaigns" },
+    { label: "Ambassador Programs", href: "/ambassador-programs" },
+    { label: "Campus Programs", href: "/campus-programs" },
+    { label: "Events", href: "/events" },
   ],
-  resources: [
-    { label: "Case Studies", href: "#case-studies" },
-    { label: "Blog", href: "#" },
-    { label: "Documentation", href: "#" },
-    { label: "Support", href: "#" },
+  legal: [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
   ],
 };
 
@@ -31,6 +29,8 @@ const socialLinks = [
 ];
 
 export const Footer = () => {
+  const { theme } = useTheme();
+
   return (
     <footer id="contact" className="section-padding border-t border-border/50">
       <div className="max-w-6xl mx-auto">
@@ -44,7 +44,7 @@ export const Footer = () => {
             <p className="text-muted-foreground mb-6">
               Get in touch with our team to discuss your growth strategy.
             </p>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Input 
                 type="email" 
                 placeholder="Enter your email" 
@@ -58,18 +58,18 @@ export const Footer = () => {
           </div>
 
           {/* Right - Links */}
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 gap-6 md:gap-8">
             <div>
               <h3 className="font-bold mb-4">Company</h3>
               <ul className="space-y-3">
                 {footerLinks.company.map((link) => (
                   <li key={link.label}>
-                    <a 
-                      href={link.href} 
+                    <Link 
+                      to={link.href} 
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -79,27 +79,27 @@ export const Footer = () => {
               <ul className="space-y-3">
                 {footerLinks.services.map((link) => (
                   <li key={link.label}>
-                    <a 
-                      href={link.href} 
+                    <Link 
+                      to={link.href} 
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <h3 className="font-bold mb-4">Resources</h3>
+              <h3 className="font-bold mb-4">Legal</h3>
               <ul className="space-y-3">
-                {footerLinks.resources.map((link) => (
+                {footerLinks.legal.map((link) => (
                   <li key={link.label}>
-                    <a 
-                      href={link.href} 
+                    <Link 
+                      to={link.href} 
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -110,7 +110,11 @@ export const Footer = () => {
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-border/50">
           <div className="flex items-center gap-4">
-            <img src={logo} alt="KOLS3" className="h-6 invert" />
+            <img 
+              src={logo} 
+              alt="KOLS3" 
+              className={`h-6 ${theme === 'dark' ? 'invert' : ''}`} 
+            />
             <span className="text-sm text-muted-foreground">
               © 2025 KOLS3. All rights reserved.
             </span>
