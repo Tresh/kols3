@@ -8,12 +8,12 @@ import { NichesStep } from "./steps/NichesStep";
 import { DeliverablesStep } from "./steps/DeliverablesStep";
 import { PastWorkStep } from "./steps/PastWorkStep";
 import { PreferencesStep } from "./steps/PreferencesStep";
-import { ProofStep } from "./steps/ProofStep";
 import { WalletStep } from "./steps/WalletStep";
 import { AgreementsStep } from "./steps/AgreementsStep";
 import { KOLFormData } from "@/types/kol-form";
 import { ArrowLeft, ArrowRight, Rocket, CheckCircle } from "lucide-react";
 
+// Removed ProofStep - retweet/quote tasks are now in the Tasks page
 const STEPS = [
   'Identity',
   'Platforms',
@@ -22,7 +22,6 @@ const STEPS = [
   'Deliverables',
   'Past Work',
   'Preferences',
-  'Proof',
   'Wallet',
   'Agreement',
 ];
@@ -100,11 +99,9 @@ export const KOLOnboardingForm = ({ onComplete }: KOLOnboardingFormProps) => {
       case 6: // Preferences
         return !!(formData.minimumBudget && formData.preferredPayment.length > 0 && 
                   formData.availability && formData.timeCommitment);
-      case 7: // Proof
-        return !!(formData.retweetLink && formData.quoteTweetLink && formData.twitterUsername);
-      case 8: // Wallet
+      case 7: // Wallet
         return !!(formData.walletAddress && formData.preferredChain);
-      case 9: // Agreements
+      case 8: // Agreements
         return formData.termsAccepted && formData.escrowAccepted && 
                formData.proofOfWorkAccepted && formData.publicProfileConsent;
       default:
@@ -154,10 +151,8 @@ export const KOLOnboardingForm = ({ onComplete }: KOLOnboardingFormProps) => {
       case 6:
         return <PreferencesStep data={formData} updateData={updateData} />;
       case 7:
-        return <ProofStep data={formData} updateData={updateData} />;
-      case 8:
         return <WalletStep data={formData} updateData={updateData} />;
-      case 9:
+      case 8:
         return <AgreementsStep data={formData} updateData={updateData} />;
       default:
         return null;

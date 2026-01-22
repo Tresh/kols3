@@ -10,6 +10,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { KOLOnboardingForm } from "@/components/kol-form/KOLOnboardingForm";
 
@@ -32,9 +33,9 @@ export const ApplicationDrawer = ({ open, onOpenChange }: ApplicationDrawerProps
           <DrawerHeader>
             <DrawerTitle className="text-xl font-bold">Create Your KOL Profile</DrawerTitle>
           </DrawerHeader>
-          <div className="px-4 pb-6 overflow-y-auto max-h-[80vh]">
+          <ScrollArea className="h-[80vh] px-4 pb-6">
             <KOLOnboardingForm onComplete={handleComplete} />
-          </div>
+          </ScrollArea>
         </DrawerContent>
       </Drawer>
     );
@@ -42,11 +43,13 @@ export const ApplicationDrawer = ({ open, onOpenChange }: ApplicationDrawerProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">Create Your KOL Profile</DialogTitle>
         </DialogHeader>
-        <KOLOnboardingForm onComplete={handleComplete} />
+        <ScrollArea className="flex-1 max-h-[75vh] pr-4">
+          <KOLOnboardingForm onComplete={handleComplete} />
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
