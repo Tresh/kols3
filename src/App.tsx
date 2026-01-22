@@ -9,7 +9,8 @@ import Index from "./pages/Index";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import KOLCampaigns from "./pages/KOLCampaigns";
-import AmbassadorPrograms from "./pages/AmbassadorPrograms";
+import AmbassadorLaunchpad from "./pages/AmbassadorLaunchpad";
+import KOLMarket from "./pages/KOLMarket";
 import CampusPrograms from "./pages/CampusPrograms";
 import Events from "./pages/Events";
 import Privacy from "./pages/Privacy";
@@ -36,7 +37,8 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<About />} />
             <Route path="/kol-campaigns" element={<KOLCampaigns />} />
-            <Route path="/ambassador-programs" element={<AmbassadorPrograms />} />
+            <Route path="/ambassador-programs" element={<AmbassadorLaunchpad />} />
+            <Route path="/kol-market" element={<KOLMarket />} />
             <Route path="/campus-programs" element={<CampusPrograms />} />
             <Route path="/events" element={<Events />} />
             <Route path="/privacy" element={<Privacy />} />

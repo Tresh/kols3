@@ -10,6 +10,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/#services" },
   { label: "AI-Marketing", href: "/ai-marketing" },
+  { label: "KOL Market", href: "/kol-market" },
   { label: "Dashboards", href: "/dashboard" },
   { label: "Founder Network", href: "/founder-network" },
   { label: "About", href: "/about" },

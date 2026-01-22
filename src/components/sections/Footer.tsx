@@ -12,10 +12,11 @@ const footerLinks = {
   ],
   services: [
     { label: "AI-Marketing", href: "/ai-marketing" },
+    { label: "KOL Market", href: "/kol-market" },
+    { label: "Ambassador Launchpad", href: "/ambassador-programs" },
     { label: "Dashboards", href: "/dashboard" },
     { label: "Founder Network", href: "/founder-network" },
     { label: "KOL Campaigns", href: "/kol-campaigns" },
-    { label: "Ambassador Programs", href: "/ambassador-programs" },
     { label: "Campus Programs", href: "/campus-programs" },
     { label: "Events", href: "/events" },
   ],
