@@ -4,19 +4,17 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/sections/Footer';
 import { ComingSoonModal } from '@/components/ComingSoonModal';
 
-export default function Auth() {
+export default function DashboardRedirect() {
   const [modalOpen, setModalOpen] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Open modal on mount
     setModalOpen(true);
   }, []);
 
   const handleModalClose = (open: boolean) => {
     setModalOpen(open);
     if (!open) {
-      // Navigate back home when modal is closed
       navigate('/');
     }
   };
@@ -26,7 +24,7 @@ export default function Auth() {
       <Navbar />
       <main className="container mx-auto px-4 py-20 min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">Dashboard Access</h1>
+          <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
           <p className="text-muted-foreground">Coming soon...</p>
         </div>
       </main>

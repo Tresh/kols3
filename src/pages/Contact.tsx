@@ -64,7 +64,7 @@ const Contact = () => {
 
             {/* Telegram Card */}
             <a 
-              href="https://t.me/kols3"
+              href="https://t.me/kols3io"
               target="_blank"
               rel="noopener noreferrer"
               className="group glass-card rounded-3xl p-8 md:p-10 hover:bg-foreground/5 transition-all duration-300 border border-foreground/10 hover:border-foreground/20"
@@ -77,7 +77,7 @@ const Contact = () => {
               </div>
               <h3 className="text-2xl font-bold mb-2">Telegram</h3>
               <p className="text-muted-foreground mb-4">Fast responses and community updates</p>
-              <span className="text-lg font-medium">t.me/kols3</span>
+              <span className="text-lg font-medium">t.me/kols3io</span>
             </a>
 
             {/* Response Time Card */}

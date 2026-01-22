@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/kols3-logo.png";
 import { useTheme } from "@/components/ThemeProvider";
+import { ComingSoonModal } from "@/components/ComingSoonModal";
 
 const footerLinks = {
   company: [
@@ -14,7 +16,7 @@ const footerLinks = {
     { label: "AI-Marketing", href: "/ai-marketing" },
     { label: "KOL Market", href: "/kol-market" },
     { label: "Ambassador Launchpad", href: "/ambassador-programs" },
-    { label: "Dashboards", href: "/dashboard" },
+    { label: "Dashboards", href: "#", isDashboard: true },
     { label: "Founder Network", href: "/founder-network" },
     { label: "KOL Campaigns", href: "/kol-campaigns" },
     { label: "Campus Programs", href: "/campus-programs" },
@@ -27,11 +29,12 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Send, href: "https://t.me/kols3", label: "Telegram" },
+  { icon: Send, href: "https://t.me/kols3io", label: "Telegram" },
 ];
 
 export const Footer = () => {
   const { theme } = useTheme();
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
 
   return (
     <footer id="contact" className="section-padding border-t border-border/50">
@@ -81,12 +84,21 @@ export const Footer = () => {
               <ul className="space-y-3">
                 {footerLinks.services.map((link) => (
                   <li key={link.label}>
-                    <Link 
-                      to={link.href} 
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link.label}
-                    </Link>
+                    {link.isDashboard ? (
+                      <button
+                        onClick={() => setComingSoonOpen(true)}
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {link.label}
+                      </button>
+                    ) : (
+                      <Link 
+                        to={link.href} 
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -137,7 +149,7 @@ export const Footer = () => {
             </a>
             {/* Telegram */}
             <a
-              href="https://t.me/kols3"
+              href="https://t.me/kols3io"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-10 h-10 rounded-lg bg-foreground/5 hover:bg-foreground/10 transition-colors"
@@ -148,6 +160,7 @@ export const Footer = () => {
           </div>
         </div>
       </div>
+      <ComingSoonModal open={comingSoonOpen} onOpenChange={setComingSoonOpen} />
     </footer>
   );
 };
