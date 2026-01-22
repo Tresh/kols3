@@ -187,9 +187,9 @@ export const KOLOnboardingForm = ({ onComplete }: KOLOnboardingFormProps) => {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full max-h-[75vh]">
       {/* Progress */}
-      <div className="mb-6">
+      <div className="mb-6 flex-shrink-0">
         <FormProgress 
           currentStep={currentStep} 
           totalSteps={STEPS.length} 
@@ -198,7 +198,7 @@ export const KOLOnboardingForm = ({ onComplete }: KOLOnboardingFormProps) => {
       </div>
 
       {/* Step Content */}
-      <div className="flex-1 overflow-y-auto px-1">
+      <div className="flex-1 overflow-y-auto px-1 min-h-0">
         {renderStep()}
       </div>
 
