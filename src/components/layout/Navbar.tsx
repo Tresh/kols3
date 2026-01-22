@@ -9,8 +9,10 @@ import { useTheme } from "@/components/ThemeProvider";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/#services" },
+  { label: "Self-Marketing", href: "/self-marketing" },
+  { label: "Dashboards", href: "/dashboard" },
+  { label: "Founder Network", href: "/founder-network" },
   { label: "About", href: "/about" },
-  { label: "For Brands", href: "/#brands" },
 ];
 
 export const Navbar = () => {

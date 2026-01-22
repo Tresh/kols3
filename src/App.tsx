@@ -15,6 +15,12 @@ import Events from "./pages/Events";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
+import SelfMarketing from "./pages/SelfMarketing";
+import Dashboard from "./pages/Dashboard";
+import DashboardKOL from "./pages/DashboardKOL";
+import DashboardAmbassador from "./pages/DashboardAmbassador";
+import DashboardCampus from "./pages/DashboardCampus";
+import FounderNetwork from "./pages/FounderNetwork";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +41,12 @@ const App = () => (
             <Route path="/events" element={<Events />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/self-marketing" element={<SelfMarketing />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/kol" element={<DashboardKOL />} />
+            <Route path="/dashboard/ambassador" element={<DashboardAmbassador />} />
+            <Route path="/dashboard/campus" element={<DashboardCampus />} />
+            <Route path="/founder-network" element={<FounderNetwork />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
