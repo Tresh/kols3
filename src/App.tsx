@@ -41,7 +41,7 @@ const App = () => (
             <Route path="/events" element={<Events />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
-            <Route path="/self-marketing" element={<SelfMarketing />} />
+            <Route path="/ai-marketing" element={<SelfMarketing />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/kol" element={<DashboardKOL />} />
             <Route path="/dashboard/ambassador" element={<DashboardAmbassador />} />

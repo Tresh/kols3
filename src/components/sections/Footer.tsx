@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Twitter, Send, MessageCircle, ArrowRight } from "lucide-react";
+import { Send, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/kols3-logo.png";
 import { useTheme } from "@/components/ThemeProvider";
@@ -11,7 +11,7 @@ const footerLinks = {
     { label: "Contact", href: "/contact" },
   ],
   services: [
-    { label: "Self-Marketing", href: "/self-marketing" },
+    { label: "AI-Marketing", href: "/ai-marketing" },
     { label: "Dashboards", href: "/dashboard" },
     { label: "Founder Network", href: "/founder-network" },
     { label: "KOL Campaigns", href: "/kol-campaigns" },
@@ -26,9 +26,7 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Send, href: "#", label: "Telegram" },
-  { icon: MessageCircle, href: "#", label: "Discord" },
+  { icon: Send, href: "https://t.me/kols3", label: "Telegram" },
 ];
 
 export const Footer = () => {
@@ -124,16 +122,28 @@ export const Footer = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            {socialLinks.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                className="flex items-center justify-center w-10 h-10 rounded-lg bg-foreground/5 hover:bg-foreground/10 transition-colors"
-                aria-label={social.label}
-              >
-                <social.icon size={18} />
-              </a>
-            ))}
+            {/* X (Twitter) */}
+            <a
+              href="https://x.com/kols3io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-foreground/5 hover:bg-foreground/10 transition-colors"
+              aria-label="X"
+            >
+              <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </a>
+            {/* Telegram */}
+            <a
+              href="https://t.me/kols3"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-foreground/5 hover:bg-foreground/10 transition-colors"
+              aria-label="Telegram"
+            >
+              <Send size={18} />
+            </a>
           </div>
         </div>
       </div>
