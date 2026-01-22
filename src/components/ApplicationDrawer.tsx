@@ -43,13 +43,13 @@ export const ApplicationDrawer = ({ open, onOpenChange }: ApplicationDrawerProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
-        <DialogHeader>
+      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-2xl font-bold">Create Your KOL Profile</DialogTitle>
         </DialogHeader>
-        <ScrollArea className="flex-1 max-h-[75vh] pr-4">
+        <div className="flex-1 overflow-hidden">
           <KOLOnboardingForm onComplete={handleComplete} />
-        </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );
