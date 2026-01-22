@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ComingSoonModal } from "@/components/ComingSoonModal";
 import { 
   Users, 
   GraduationCap, 
@@ -128,6 +129,7 @@ const proFeatures = [
 ];
 
 const CampaignLaunchpad = () => {
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
   const [formData, setFormData] = useState({
     campaignType: "",
     productType: "",
@@ -320,7 +322,7 @@ const CampaignLaunchpad = () => {
                   </div>
                 </div>
 
-                <Button variant="hero" size="lg" className="w-full mt-8">
+                <Button variant="hero" size="lg" className="w-full mt-8" onClick={() => setComingSoonOpen(true)}>
                   <Sparkles className="mr-2 h-5 w-5" />
                   Generate Campaign Plan
                 </Button>
@@ -475,6 +477,7 @@ const CampaignLaunchpad = () => {
       </main>
 
       <Footer />
+      <ComingSoonModal open={comingSoonOpen} onOpenChange={setComingSoonOpen} />
     </div>
   );
 };

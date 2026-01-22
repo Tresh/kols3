@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ApplicationDrawer } from "@/components/ApplicationDrawer";
+import { ComingSoonModal } from "@/components/ComingSoonModal";
 import { 
   Search, 
   Filter, 
@@ -206,6 +207,7 @@ const hireSteps = [
 
 const KOLMarket = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTiers, setSelectedTiers] = useState<string[]>([]);
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
@@ -264,34 +266,32 @@ const KOLMarket = () => {
                 Browse KOLs
                 <ArrowRight size={18} />
               </Button>
-              <Button variant="outline" size="lg" onClick={() => setDrawerOpen(true)}>
-                Post a Job
-              </Button>
             </div>
           </div>
         </section>
 
-        {/* Global Search Bar */}
+        {/* Filter Toggle & Search */}
         <section className="section-padding py-8 border-y border-border/50">
-          <div className="max-w-4xl mx-auto">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
-              <Input 
-                type="text"
-                placeholder="Search by niche, platform, region, or goal... (e.g., 'Solana KOLs in Nigeria', 'DeFi YouTubers')"
-                className="pl-12 pr-4 py-6 text-lg bg-foreground/5 border-foreground/10"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col sm:flex-row items-center gap-4">
               <Button 
-                variant="ghost" 
-                size="sm" 
-                className="absolute right-2 top-1/2 -translate-y-1/2"
+                variant={showFilters ? "default" : "outline"}
                 onClick={() => setShowFilters(!showFilters)}
+                className="flex-shrink-0"
               >
                 <Filter size={18} className="mr-2" />
-                Filters
+                {showFilters ? "Hide Filters" : "Show Filters"}
               </Button>
+              <div className="relative flex-1 w-full">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
+                <Input 
+                  type="text"
+                  placeholder="Search by niche, platform, region, or goal..."
+                  className="pl-12 pr-4 py-3 bg-foreground/5 border-foreground/10 w-full"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -530,10 +530,10 @@ const KOLMarket = () => {
                       <div className="font-bold">{kol.startingPrice}</div>
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" onClick={() => setComingSoonOpen(true)}>
                         View Profile
                       </Button>
-                      <Button variant="hero" size="sm" onClick={() => setDrawerOpen(true)}>
+                      <Button variant="hero" size="sm" onClick={() => setComingSoonOpen(true)}>
                         Hire
                       </Button>
                     </div>
@@ -550,7 +550,7 @@ const KOLMarket = () => {
             </div>
 
             <div className="text-center mt-12">
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" onClick={() => setComingSoonOpen(true)}>
                 Load More KOLs
               </Button>
             </div>
@@ -716,14 +716,6 @@ const KOLMarket = () => {
               >
                 Browse KOLs Now
               </Button>
-              <Button 
-                size="lg" 
-                className="bg-background text-foreground hover:bg-background/90"
-                onClick={() => setDrawerOpen(true)}
-              >
-                Post a Job
-                <ArrowRight size={18} />
-              </Button>
             </div>
           </div>
         </section>
@@ -731,6 +723,7 @@ const KOLMarket = () => {
 
       <Footer />
       <ApplicationDrawer open={drawerOpen} onOpenChange={setDrawerOpen} />
+      <ComingSoonModal open={comingSoonOpen} onOpenChange={setComingSoonOpen} />
     </div>
   );
 };
