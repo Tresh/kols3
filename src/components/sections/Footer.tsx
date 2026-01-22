@@ -11,6 +11,9 @@ const footerLinks = {
     { label: "Contact", href: "/contact" },
   ],
   services: [
+    { label: "Self-Marketing", href: "/self-marketing" },
+    { label: "Dashboards", href: "/dashboard" },
+    { label: "Founder Network", href: "/founder-network" },
     { label: "KOL Campaigns", href: "/kol-campaigns" },
     { label: "Ambassador Programs", href: "/ambassador-programs" },
     { label: "Campus Programs", href: "/campus-programs" },
