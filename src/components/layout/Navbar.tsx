@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { ApplicationDrawer } from "@/components/ApplicationDrawer";
+import { ComingSoonModal } from "@/components/ComingSoonModal";
 import logo from "@/assets/kols3-logo.png";
 import { useTheme } from "@/components/ThemeProvider";
 
@@ -12,13 +13,14 @@ const navLinks = [
   { label: "Campaign Launchpad", href: "/campaign-launchpad" },
   { label: "AI-Marketing", href: "/ai-marketing" },
   { label: "KOL Market", href: "/kol-market" },
-  { label: "Dashboards", href: "/dashboard" },
+  { label: "Dashboards", href: "#", isDashboard: true },
   { label: "About", href: "/about" },
 ];
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
   const location = useLocation();
   const { theme } = useTheme();
 
@@ -51,7 +53,15 @@ export const Navbar = () => {
             {/* Desktop Nav */}
             <div className="hidden lg:flex items-center gap-8">
               {navLinks.map((link) => (
-                link.href.startsWith("/#") ? (
+                link.isDashboard ? (
+                  <button
+                    key={link.label}
+                    onClick={() => setComingSoonOpen(true)}
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </button>
+                ) : link.href.startsWith("/#") ? (
                   <a
                     key={link.label}
                     href={link.href}
@@ -101,7 +111,15 @@ export const Navbar = () => {
             <div className="lg:hidden py-6 border-t border-border/50 animate-fade-in">
               <div className="flex flex-col gap-4">
                 {navLinks.map((link) => (
-                  link.href.startsWith("/#") ? (
+                  link.isDashboard ? (
+                    <button
+                      key={link.label}
+                      onClick={() => { setIsOpen(false); setComingSoonOpen(true); }}
+                      className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors py-2 text-left"
+                    >
+                      {link.label}
+                    </button>
+                  ) : link.href.startsWith("/#") ? (
                     <a
                       key={link.label}
                       href={link.href}
@@ -138,6 +156,7 @@ export const Navbar = () => {
         </div>
       </nav>
       <ApplicationDrawer open={drawerOpen} onOpenChange={setDrawerOpen} />
+      <ComingSoonModal open={comingSoonOpen} onOpenChange={setComingSoonOpen} />
     </>
   );
 };
