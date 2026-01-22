@@ -19,6 +19,7 @@ import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 import SelfMarketing from "./pages/SelfMarketing";
 import FounderNetwork from "./pages/FounderNetwork";
+import CampaignLaunchpad from "./pages/CampaignLaunchpad";
 import Auth from "./pages/Auth";
 import DashboardOverview from "./pages/DashboardOverview";
 import DashboardTasks from "./pages/DashboardTasks";
@@ -50,6 +51,7 @@ const App = () => (
               <Route path="/terms" element={<Terms />} />
               <Route path="/ai-marketing" element={<SelfMarketing />} />
               <Route path="/founder-network" element={<FounderNetwork />} />
+              <Route path="/campaign-launchpad" element={<CampaignLaunchpad />} />
               {/* Dashboard routes */}
               <Route path="/dashboard" element={<DashboardOverview />} />
               <Route path="/dashboard/tasks" element={<DashboardTasks />} />
