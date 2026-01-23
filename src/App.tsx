@@ -12,6 +12,7 @@ import About from "./pages/About";
 import KOLCampaigns from "./pages/KOLCampaigns";
 import AmbassadorLaunchpad from "./pages/AmbassadorLaunchpad";
 import KOLMarket from "./pages/KOLMarket";
+import CreatorProfile from "./pages/CreatorProfile";
 import CampusPrograms from "./pages/CampusPrograms";
 import Events from "./pages/Events";
 import Privacy from "./pages/Privacy";
@@ -47,6 +48,7 @@ const App = () => (
               <Route path="/kol-campaigns" element={<KOLCampaigns />} />
               <Route path="/ambassador-programs" element={<AmbassadorLaunchpad />} />
               <Route path="/kol-market" element={<KOLMarket />} />
+              <Route path="/creator/:id" element={<CreatorProfile />} />
               <Route path="/campus-programs" element={<CampusPrograms />} />
               <Route path="/events" element={<Events />} />
               <Route path="/privacy" element={<Privacy />} />
