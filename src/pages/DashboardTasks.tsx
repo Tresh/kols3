@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,7 +10,6 @@ import {
   Star, 
   CheckCircle, 
   Clock, 
-  Link as LinkIcon, 
   ExternalLink,
   Loader2,
   Award
@@ -25,21 +24,22 @@ interface Task {
   description: string | null;
   xp_reward: number;
   task_type: string;
-  verification_type: string | null;
-  link_template: string | null;
+  requires_proof: boolean;
+  proof_description: string | null;
   is_active: boolean;
+  deadline: string | null;
 }
 
-interface TaskCompletion {
+interface TaskSubmission {
   id: string;
   task_id: string;
   status: string;
   proof_link: string | null;
-  xp_earned: number;
+  xp_awarded: number;
 }
 
 export default function DashboardTasks() {
-  const { user, refreshProfile } = useAuth();
+  const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [proofLinks, setProofLinks] = useState<Record<string, string>>({});
@@ -56,15 +56,15 @@ export default function DashboardTasks() {
     },
   });
 
-  const { data: completions } = useQuery({
-    queryKey: ['taskCompletions', user?.id],
+  const { data: submissions } = useQuery({
+    queryKey: ['taskSubmissions', user?.id],
     queryFn: async () => {
       if (!user) return [];
       const { data } = await supabase
-        .from('user_task_completions')
+        .from('task_submissions')
         .select('*')
         .eq('user_id', user.id);
-      return (data || []) as TaskCompletion[];
+      return (data || []) as TaskSubmission[];
     },
     enabled: !!user,
   });
@@ -77,20 +77,20 @@ export default function DashboardTasks() {
       if (!task) throw new Error('Task not found');
 
       const { error } = await supabase
-        .from('user_task_completions')
+        .from('task_submissions')
         .insert({
           user_id: user.id,
           task_id: taskId,
           proof_link: proofLink,
-          status: 'pending',
-          xp_earned: 0,
+          status: 'submitted',
+          xp_awarded: 0,
         });
 
       if (error) throw error;
     },
     onSuccess: () => {
       toast({ title: 'Task submitted!', description: 'Waiting for verification' });
-      queryClient.invalidateQueries({ queryKey: ['taskCompletions'] });
+      queryClient.invalidateQueries({ queryKey: ['taskSubmissions'] });
       setProofLinks({});
     },
     onError: (error: any) => {
@@ -103,9 +103,9 @@ export default function DashboardTasks() {
   });
 
   const getTaskStatus = (taskId: string) => {
-    const completion = completions?.find(c => c.task_id === taskId);
-    if (!completion) return 'available';
-    return completion.status;
+    const submission = submissions?.find(c => c.task_id === taskId);
+    if (!submission) return 'available';
+    return submission.status;
   };
 
   const filterTasks = (type: string) => {
@@ -114,34 +114,39 @@ export default function DashboardTasks() {
 
   const TaskCard = ({ task }: { task: Task }) => {
     const status = getTaskStatus(task.id);
-    const completion = completions?.find(c => c.task_id === task.id);
+    const submission = submissions?.find(c => c.task_id === task.id);
 
     return (
-      <Card className={`border-border/50 ${status === 'verified' ? 'opacity-60' : ''}`}>
+      <Card className={`border-border/50 ${status === 'approved' ? 'opacity-60' : ''}`}>
         <CardContent className="p-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="font-medium">{task.title}</h3>
-                {status === 'verified' && (
+                {status === 'approved' && (
                   <Badge variant="secondary" className="bg-green-500/10 text-green-500">
                     <CheckCircle className="w-3 h-3 mr-1" />
                     Completed
                   </Badge>
                 )}
-                {status === 'pending' && (
+                {(status === 'submitted' || status === 'under_review') && (
                   <Badge variant="secondary" className="bg-yellow-500/10 text-yellow-500">
                     <Clock className="w-3 h-3 mr-1" />
                     Pending
                   </Badge>
                 )}
+                {status === 'rejected' && (
+                  <Badge variant="secondary" className="bg-red-500/10 text-red-500">
+                    Rejected
+                  </Badge>
+                )}
               </div>
               <p className="text-sm text-muted-foreground mb-3">{task.description}</p>
               
-              {status === 'available' && task.verification_type === 'link' && (
+              {status === 'available' && task.requires_proof && (
                 <div className="flex items-center gap-2">
                   <Input
-                    placeholder={task.link_template || 'Paste your proof link...'}
+                    placeholder={task.proof_description || 'Paste your proof link...'}
                     value={proofLinks[task.id] || ''}
                     onChange={(e) => setProofLinks({ ...proofLinks, [task.id]: e.target.value })}
                     className="flex-1"
@@ -163,9 +168,9 @@ export default function DashboardTasks() {
                 </div>
               )}
 
-              {status === 'pending' && completion?.proof_link && (
+              {(status === 'submitted' || status === 'under_review') && submission?.proof_link && (
                 <a 
-                  href={completion.proof_link} 
+                  href={submission.proof_link} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-sm text-primary flex items-center gap-1 hover:underline"
@@ -201,8 +206,11 @@ export default function DashboardTasks() {
     );
   }
 
-  const totalXP = completions?.filter(c => c.status === 'verified').reduce((sum, c) => sum + c.xp_earned, 0) || 0;
-  const pendingXP = tasks?.filter(t => getTaskStatus(t.id) === 'pending').reduce((sum, t) => sum + t.xp_reward, 0) || 0;
+  const totalXP = submissions?.filter(c => c.status === 'approved').reduce((sum, c) => sum + c.xp_awarded, 0) || 0;
+  const pendingXP = tasks?.filter(t => {
+    const status = getTaskStatus(t.id);
+    return status === 'submitted' || status === 'under_review';
+  }).reduce((sum, t) => sum + t.xp_reward, 0) || 0;
 
   return (
     <DashboardLayout>
@@ -241,34 +249,43 @@ export default function DashboardTasks() {
         </Card>
 
         {/* Tasks Tabs */}
-        <Tabs defaultValue="one_time" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 max-w-md">
-            <TabsTrigger value="one_time">One-Time</TabsTrigger>
-            <TabsTrigger value="daily">Daily</TabsTrigger>
-            <TabsTrigger value="weekly">Weekly</TabsTrigger>
+        <Tabs defaultValue="general" className="w-full">
+          <TabsList className="grid w-full grid-cols-4 max-w-lg">
+            <TabsTrigger value="general">General</TabsTrigger>
+            <TabsTrigger value="social">Social</TabsTrigger>
+            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="engagement">Engagement</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="one_time" className="mt-6 space-y-4">
-            {filterTasks('one_time').length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">No one-time tasks available</p>
+          <TabsContent value="general" className="mt-6 space-y-4">
+            {filterTasks('general').length === 0 ? (
+              <p className="text-center text-muted-foreground py-8">No general tasks available</p>
             ) : (
-              filterTasks('one_time').map(task => <TaskCard key={task.id} task={task} />)
+              filterTasks('general').map(task => <TaskCard key={task.id} task={task} />)
             )}
           </TabsContent>
 
-          <TabsContent value="daily" className="mt-6 space-y-4">
-            {filterTasks('daily').length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">No daily tasks available</p>
+          <TabsContent value="social" className="mt-6 space-y-4">
+            {filterTasks('social').length === 0 ? (
+              <p className="text-center text-muted-foreground py-8">No social tasks available</p>
             ) : (
-              filterTasks('daily').map(task => <TaskCard key={task.id} task={task} />)
+              filterTasks('social').map(task => <TaskCard key={task.id} task={task} />)
             )}
           </TabsContent>
 
-          <TabsContent value="weekly" className="mt-6 space-y-4">
-            {filterTasks('weekly').length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">No weekly tasks available</p>
+          <TabsContent value="content" className="mt-6 space-y-4">
+            {filterTasks('content').length === 0 ? (
+              <p className="text-center text-muted-foreground py-8">No content tasks available</p>
             ) : (
-              filterTasks('weekly').map(task => <TaskCard key={task.id} task={task} />)
+              filterTasks('content').map(task => <TaskCard key={task.id} task={task} />)
+            )}
+          </TabsContent>
+
+          <TabsContent value="engagement" className="mt-6 space-y-4">
+            {filterTasks('engagement').length === 0 ? (
+              <p className="text-center text-muted-foreground py-8">No engagement tasks available</p>
+            ) : (
+              filterTasks('engagement').map(task => <TaskCard key={task.id} task={task} />)
             )}
           </TabsContent>
         </Tabs>
