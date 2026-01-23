@@ -11,12 +11,12 @@ export default function DashboardOverview() {
   const { profile, roles, user } = useAuth();
   const navigate = useNavigate();
 
-  const { data: completedTasks } = useQuery({
-    queryKey: ['completedTasks', user?.id],
+  const { data: submissions } = useQuery({
+    queryKey: ['taskSubmissions', user?.id],
     queryFn: async () => {
       if (!user) return [];
       const { data } = await supabase
-        .from('user_task_completions')
+        .from('task_submissions')
         .select('*')
         .eq('user_id', user.id);
       return data || [];
@@ -35,8 +35,8 @@ export default function DashboardOverview() {
     },
   });
 
-  const completedCount = completedTasks?.filter(t => t.status === 'verified').length || 0;
-  const pendingCount = completedTasks?.filter(t => t.status === 'pending').length || 0;
+  const completedCount = submissions?.filter(t => t.status === 'approved').length || 0;
+  const pendingCount = submissions?.filter(t => t.status === 'submitted' || t.status === 'under_review').length || 0;
   const totalTasks = allTasks?.length || 0;
 
   const stats = [
@@ -55,7 +55,7 @@ export default function DashboardOverview() {
       bgColor: 'bg-green-500/10'
     },
     { 
-      title: 'Pending Verification', 
+      title: 'Pending Review', 
       value: pendingCount, 
       icon: TrendingUp, 
       color: 'text-blue-500',
@@ -63,7 +63,7 @@ export default function DashboardOverview() {
     },
     { 
       title: 'Available Tasks', 
-      value: totalTasks - completedCount, 
+      value: Math.max(totalTasks - completedCount, 0), 
       icon: Award, 
       color: 'text-purple-500',
       bgColor: 'bg-purple-500/10'
@@ -79,9 +79,9 @@ export default function DashboardOverview() {
             Welcome back{profile?.display_name ? `, ${profile.display_name}` : ''}!
           </h1>
           <p className="text-muted-foreground">
-            {roles.includes('kol') || roles.includes('ambassador') 
+            {roles.includes('creator') || roles.includes('kol') || roles.includes('ambassador') 
               ? "Here's your activity overview"
-              : "Manage your campaigns and discover KOLs"}
+              : "Manage your campaigns and discover creators"}
           </p>
         </div>
 
