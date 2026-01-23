@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Users, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ApplicationDrawer } from "@/components/ApplicationDrawer";
 
 export const Hero = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   return (
     <>
       <section
@@ -45,16 +49,15 @@ export const Hero = () => {
           {/* CTAs */}
           <div className="flex flex-col gap-3 px-4 animate-slide-up" style={{ animationDelay: "200ms" }}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link to="/auth" className="w-full sm:w-auto">
-                <Button 
-                  variant="hero" 
-                  size="lg" 
-                  className="w-full"
-                >
-                  <Users size={18} />
-                  Join the Network
-                </Button>
-              </Link>
+              <Button 
+                variant="hero" 
+                size="lg" 
+                className="w-full sm:w-auto"
+                onClick={() => setDrawerOpen(true)}
+              >
+                <Users size={18} />
+                Join the Network
+              </Button>
               <Link to="/contact" className="w-full sm:w-auto">
                 <Button variant="heroOutline" size="lg" className="w-full">
                   <Zap size={18} />
@@ -82,6 +85,7 @@ export const Hero = () => {
           </div>
         </div>
       </section>
+      <ApplicationDrawer open={drawerOpen} onOpenChange={setDrawerOpen} />
     </>
   );
 };

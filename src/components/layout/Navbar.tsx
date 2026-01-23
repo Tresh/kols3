@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { ApplicationDrawer } from "@/components/ApplicationDrawer";
 import { ComingSoonModal } from "@/components/ComingSoonModal";
 import logo from "@/assets/kols3-logo.png";
 import { useTheme } from "@/components/ThemeProvider";
@@ -18,6 +19,7 @@ const navLinks = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [comingSoonOpen, setComingSoonOpen] = useState(false);
   const location = useLocation();
   const { theme } = useTheme();
@@ -90,11 +92,9 @@ export const Navbar = () => {
                   Contact
                 </Button>
               </Link>
-              <Link to="/auth">
-                <Button variant="hero" size="sm">
-                  Join the Network
-                </Button>
-              </Link>
+              <Button variant="hero" size="sm" onClick={() => setDrawerOpen(true)}>
+                Join Waitlist
+              </Button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -146,15 +146,16 @@ export const Navbar = () => {
                   <Link to="/contact" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" className="w-full">Contact</Button>
                   </Link>
-                  <Link to="/auth" onClick={() => setIsOpen(false)}>
-                    <Button variant="hero" className="w-full">Join the Network</Button>
-                  </Link>
+                  <Button variant="hero" onClick={() => { setIsOpen(false); setDrawerOpen(true); }}>
+                    Join Waitlist
+                  </Button>
                 </div>
               </div>
             </div>
           )}
         </div>
       </nav>
+      <ApplicationDrawer open={drawerOpen} onOpenChange={setDrawerOpen} />
       <ComingSoonModal open={comingSoonOpen} onOpenChange={setComingSoonOpen} />
     </>
   );

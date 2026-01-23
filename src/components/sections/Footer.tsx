@@ -16,8 +16,6 @@ const footerLinks = {
     { label: "AI-Marketing", href: "/ai-marketing" },
     { label: "KOL Market", href: "/kol-market" },
     { label: "Ambassador Launchpad", href: "/ambassador-programs" },
-    { label: "Campaign Launchpad", href: "/campaign-launchpad" },
-    { label: "Scholarship Portal", href: "/scholarship" },
     { label: "Dashboards", href: "#", isDashboard: true },
     { label: "Founder Network", href: "/founder-network" },
     { label: "KOL Campaigns", href: "/kol-campaigns" },
