@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BarChart3, Target, Zap, Shield } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const features = [
   {
@@ -59,10 +60,12 @@ export const ForBrands = () => {
               ))}
             </div>
 
-            <Button variant="hero" size="xl">
-              Launch a Campaign
-              <ArrowRight size={20} />
-            </Button>
+            <Link to="/campaign-launchpad">
+              <Button variant="hero" size="xl">
+                Launch a Campaign
+                <ArrowRight size={20} />
+              </Button>
+            </Link>
           </div>
 
           {/* Right Side - Visual */}
