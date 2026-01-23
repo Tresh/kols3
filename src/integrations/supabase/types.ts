@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean | null
+          message: string
+          metadata: Json | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message: string
+          metadata?: Json | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          metadata?: Json | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -53,6 +86,225 @@ export type Database = {
           updated_at?: string
           user_id?: string
           xp?: number | null
+        }
+        Relationships: []
+      }
+      scholarship_applications: {
+        Row: {
+          applied_at: string
+          created_at: string
+          id: string
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          start_date: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string
+          created_at?: string
+          id?: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          applied_at?: string
+          created_at?: string
+          id?: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      scholarship_module_progress: {
+        Row: {
+          completed_at: string | null
+          id: string
+          module_id: string
+          status: string
+          unlocked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          id?: string
+          module_id: string
+          status?: string
+          unlocked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          id?: string
+          module_id?: string
+          status?: string
+          unlocked_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scholarship_module_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "scholarship_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scholarship_modules: {
+        Row: {
+          content_url: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          order_index: number
+          title: string
+          unlock_day: number | null
+          unlock_task_id: string | null
+          unlock_type: string
+          updated_at: string
+        }
+        Insert: {
+          content_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number
+          title: string
+          unlock_day?: number | null
+          unlock_task_id?: string | null
+          unlock_type?: string
+          updated_at?: string
+        }
+        Update: {
+          content_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number
+          title?: string
+          unlock_day?: number | null
+          unlock_task_id?: string | null
+          unlock_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scholarship_modules_unlock_task_id_fkey"
+            columns: ["unlock_task_id"]
+            isOneToOne: false
+            referencedRelation: "scholarship_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scholarship_task_submissions: {
+        Row: {
+          id: string
+          proof_link: string | null
+          proof_text: string | null
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          submitted_at: string
+          task_id: string
+          user_id: string
+          xp_earned: number | null
+        }
+        Insert: {
+          id?: string
+          proof_link?: string | null
+          proof_text?: string | null
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_at?: string
+          task_id: string
+          user_id: string
+          xp_earned?: number | null
+        }
+        Update: {
+          id?: string
+          proof_link?: string | null
+          proof_text?: string | null
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_at?: string
+          task_id?: string
+          user_id?: string
+          xp_earned?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scholarship_task_submissions_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "scholarship_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scholarship_tasks: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          due_date: string | null
+          id: string
+          is_published: boolean | null
+          target_type: string
+          target_user_ids: string[] | null
+          task_type: string
+          title: string
+          updated_at: string
+          xp_reward: number
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          is_published?: boolean | null
+          target_type?: string
+          target_user_ids?: string[] | null
+          task_type: string
+          title: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          is_published?: boolean | null
+          target_type?: string
+          target_user_ids?: string[] | null
+          task_type?: string
+          title?: string
+          updated_at?: string
+          xp_reward?: number
         }
         Relationships: []
       }
@@ -169,6 +421,18 @@ export type Database = {
         Args: { _user_id: string; _xp: number }
         Returns: undefined
       }
+      get_scholarship_leaderboard: {
+        Args: never
+        Returns: {
+          avatar_url: string
+          display_name: string
+          rank: number
+          user_id: string
+          xp: number
+        }[]
+      }
+      get_scholarship_rank: { Args: { p_user_id: string }; Returns: number }
+      get_scholarship_xp: { Args: { p_user_id: string }; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
