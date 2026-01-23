@@ -412,6 +412,33 @@ export type Database = {
           },
         ]
       }
+      verification_codes: {
+        Row: {
+          code: string
+          created_at: string | null
+          email: string
+          expires_at: string
+          id: string
+          verified: boolean | null
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          email: string
+          expires_at?: string
+          id?: string
+          verified?: boolean | null
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          email?: string
+          expires_at?: string
+          id?: string
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -421,6 +448,7 @@ export type Database = {
         Args: { _user_id: string; _xp: number }
         Returns: undefined
       }
+      cleanup_expired_codes: { Args: never; Returns: undefined }
       get_scholarship_leaderboard: {
         Args: never
         Returns: {
