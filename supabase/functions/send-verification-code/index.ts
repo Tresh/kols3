@@ -46,11 +46,29 @@ const handler = async (req: Request): Promise<Response> => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Delete any existing codes for this email
+    // Rate limiting: Check if a code was sent within the last 1 second
+    const oneSecondAgo = new Date(Date.now() - 1000).toISOString();
+    const { data: recentCodes } = await supabase
+      .from("verification_codes")
+      .select("created_at")
+      .eq("email", email.toLowerCase())
+      .gte("created_at", oneSecondAgo)
+      .limit(1);
+
+    if (recentCodes && recentCodes.length > 0) {
+      return new Response(
+        JSON.stringify({ error: "Please wait before requesting another code" }),
+        { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    // Delete any existing codes for this email (except recent ones for rate limiting check)
+    const fiveSecondsAgo = new Date(Date.now() - 5000).toISOString();
     await supabase
       .from("verification_codes")
       .delete()
-      .eq("email", email.toLowerCase());
+      .eq("email", email.toLowerCase())
+      .lt("created_at", fiveSecondsAgo);
 
     // Generate new code
     const code = generateCode();
