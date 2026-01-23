@@ -21,7 +21,13 @@ import SelfMarketing from "./pages/SelfMarketing";
 import FounderNetwork from "./pages/FounderNetwork";
 import CampaignLaunchpad from "./pages/CampaignLaunchpad";
 import Auth from "./pages/Auth";
-import DashboardRedirect from "./pages/DashboardRedirect";
+import DashboardOverview from "./pages/DashboardOverview";
+import DashboardDeals from "./pages/DashboardDeals";
+import DashboardCampaigns from "./pages/DashboardCampaigns";
+import DashboardTasks from "./pages/DashboardTasks";
+import DashboardHistory from "./pages/DashboardHistory";
+import DashboardProfile from "./pages/DashboardProfile";
+import DashboardSettings from "./pages/DashboardSettings";
 
 const queryClient = new QueryClient();
 
@@ -48,9 +54,14 @@ const App = () => (
               <Route path="/ai-marketing" element={<SelfMarketing />} />
               <Route path="/founder-network" element={<FounderNetwork />} />
               <Route path="/campaign-launchpad" element={<CampaignLaunchpad />} />
-              {/* Dashboard routes - all redirect to coming soon */}
-              <Route path="/dashboard" element={<DashboardRedirect />} />
-              <Route path="/dashboard/*" element={<DashboardRedirect />} />
+              {/* Dashboard routes */}
+              <Route path="/dashboard" element={<DashboardOverview />} />
+              <Route path="/dashboard/deals" element={<DashboardDeals />} />
+              <Route path="/dashboard/campaigns" element={<DashboardCampaigns />} />
+              <Route path="/dashboard/tasks" element={<DashboardTasks />} />
+              <Route path="/dashboard/history" element={<DashboardHistory />} />
+              <Route path="/dashboard/profile" element={<DashboardProfile />} />
+              <Route path="/dashboard/settings" element={<DashboardSettings />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
