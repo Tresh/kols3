@@ -22,6 +22,12 @@ import FounderNetwork from "./pages/FounderNetwork";
 import CampaignLaunchpad from "./pages/CampaignLaunchpad";
 import Auth from "./pages/Auth";
 import DashboardRedirect from "./pages/DashboardRedirect";
+import ScholarshipPortal from "./pages/ScholarshipPortal";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminApplicants from "./pages/admin/AdminApplicants";
+import AdminTasks from "./pages/admin/AdminTasks";
+import AdminSubmissions from "./pages/admin/AdminSubmissions";
+import AdminModules from "./pages/admin/AdminModules";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +54,14 @@ const App = () => (
               <Route path="/ai-marketing" element={<SelfMarketing />} />
               <Route path="/founder-network" element={<FounderNetwork />} />
               <Route path="/campaign-launchpad" element={<CampaignLaunchpad />} />
+              {/* Scholarship Portal */}
+              <Route path="/scholarship" element={<ScholarshipPortal />} />
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/applicants" element={<AdminApplicants />} />
+              <Route path="/admin/tasks" element={<AdminTasks />} />
+              <Route path="/admin/submissions" element={<AdminSubmissions />} />
+              <Route path="/admin/modules" element={<AdminModules />} />
               {/* Dashboard routes - all redirect to coming soon */}
               <Route path="/dashboard" element={<DashboardRedirect />} />
               <Route path="/dashboard/*" element={<DashboardRedirect />} />
