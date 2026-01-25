@@ -23,22 +23,20 @@ export interface Creator {
   id: string;
   user_id: string;
   display_name: string | null;
-  full_name: string | null;
   avatar_url: string | null;
-  short_bio: string | null;
+  bio: string | null;
   tier: string | null;
-  total_followers: number | null;
+  twitter_handle: string | null;
+  twitter_followers: number;
+  discord_handle: string | null;
+  telegram_handle: string | null;
+  youtube_url: string | null;
+  youtube_subscribers: number;
   niches: string[] | null;
-  deliverables: string[] | null;
-  continents: string[] | null;
-  country: string | null;
-  city: string | null;
+  regions: string[] | null;
   languages: string[] | null;
-  social_platforms: Json | null;
-  past_work: Json | null;
-  min_budget: string | null;
-  verification_status: string | null;
   profile_completed: boolean | null;
+  verified: boolean | null;
 }
 
 // Helper to safely parse social platforms from JSON
@@ -67,7 +65,7 @@ export function useCreators(filters?: {
         .from("creator_profiles")
         .select("*")
         .eq("profile_completed", true)
-        .order("total_followers", { ascending: false });
+        .order("twitter_followers", { ascending: false });
 
       // Apply tier filter
       if (filters?.tiers && filters.tiers.length > 0) {
@@ -79,33 +77,25 @@ export function useCreators(filters?: {
         query = query.overlaps("niches", filters.niches);
       }
 
-      // Apply continent/region filter
+      // Apply region filter
       if (filters?.regions && filters.regions.length > 0) {
-        query = query.overlaps("continents", filters.regions);
+        query = query.overlaps("regions", filters.regions);
       }
 
       const { data, error } = await query;
 
       if (error) throw error;
 
-      // Apply client-side filtering for search and platforms
+      // Apply client-side filtering for search
       let filteredData = data || [];
 
       if (filters?.search) {
         const searchLower = filters.search.toLowerCase();
         filteredData = filteredData.filter((creator) => {
-          const name = (creator.display_name || creator.full_name || "").toLowerCase();
-          const bio = (creator.short_bio || "").toLowerCase();
+          const name = (creator.display_name || "").toLowerCase();
+          const bio = (creator.bio || "").toLowerCase();
           const niches = (creator.niches || []).join(" ").toLowerCase();
           return name.includes(searchLower) || bio.includes(searchLower) || niches.includes(searchLower);
-        });
-      }
-
-      if (filters?.platforms && filters.platforms.length > 0) {
-        filteredData = filteredData.filter((creator) => {
-          const platforms = parseSocialPlatforms(creator.social_platforms)
-            .map((p) => p.platform?.toLowerCase());
-          return filters.platforms!.some((fp) => platforms.includes(fp.toLowerCase()));
         });
       }
 
@@ -146,6 +136,10 @@ export function getTierIcon(tier: string | null): string {
     case "Odyssey": return "🌙";
     case "Nebula": return "🌌";
     case "Cosmos": return "✨";
+    case "bronze": return "🥉";
+    case "silver": return "🥈";
+    case "gold": return "🥇";
+    case "platinum": return "💎";
     default: return "🚀";
   }
 }
