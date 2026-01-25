@@ -4,8 +4,10 @@ import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { ApplicationDrawer } from "@/components/ApplicationDrawer";
 import { ComingSoonModal } from "@/components/ComingSoonModal";
+import { UserMenu } from "@/components/layout/UserMenu";
 import logo from "@/assets/kols3-logo.png";
 import { useTheme } from "@/components/ThemeProvider";
+import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -23,6 +25,7 @@ export const Navbar = () => {
   const [comingSoonOpen, setComingSoonOpen] = useState(false);
   const location = useLocation();
   const { theme } = useTheme();
+  const { user } = useAuth();
 
   const handleNavClick = (href: string) => {
     setIsOpen(false);
@@ -87,14 +90,20 @@ export const Navbar = () => {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-4">
-              <Link to="/contact">
-                <Button variant="outline" size="sm">
-                  Contact
+              {!user && (
+                <Link to="/contact">
+                  <Button variant="outline" size="sm">
+                    Contact
+                  </Button>
+                </Link>
+              )}
+              {user ? (
+                <UserMenu />
+              ) : (
+                <Button variant="hero" size="sm" onClick={() => setDrawerOpen(true)}>
+                  Join Waitlist
                 </Button>
-              </Link>
-              <Button variant="hero" size="sm" onClick={() => setDrawerOpen(true)}>
-                Join Waitlist
-              </Button>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -143,12 +152,23 @@ export const Navbar = () => {
                   )
                 ))}
                 <div className="flex flex-col gap-3 pt-4 border-t border-border/50">
-                  <Link to="/contact" onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" className="w-full">Contact</Button>
-                  </Link>
-                  <Button variant="hero" onClick={() => { setIsOpen(false); setDrawerOpen(true); }}>
-                    Join Waitlist
-                  </Button>
+                  {user ? (
+                    <>
+                      <Link to="/dashboard" onClick={() => setIsOpen(false)}>
+                        <Button variant="outline" className="w-full">Dashboard</Button>
+                      </Link>
+                      <UserMenu />
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/auth" onClick={() => setIsOpen(false)}>
+                        <Button variant="outline" className="w-full">Sign In</Button>
+                      </Link>
+                      <Button variant="hero" onClick={() => { setIsOpen(false); setDrawerOpen(true); }}>
+                        Join Waitlist
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

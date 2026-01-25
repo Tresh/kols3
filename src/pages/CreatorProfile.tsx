@@ -6,17 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CreateOfferDialog } from "@/components/market/CreateOfferDialog";
-import type { SocialPlatform, PastWork } from "@/hooks/useCreators";
-import { useCreator, formatFollowers, getTierIcon, getCountryFlag, parseSocialPlatforms, parsePastWork } from "@/hooks/useCreators";
+import { useCreator, formatFollowers, getTierIcon } from "@/hooks/useCreators";
 import { 
   ArrowLeft, 
   CheckCircle, 
-  MapPin, 
-  Globe, 
   Users,
-  ExternalLink,
-  Briefcase,
-  Wallet
 } from "lucide-react";
 
 const CreatorProfile = () => {
@@ -66,11 +60,7 @@ const CreatorProfile = () => {
     );
   }
 
-  const socialPlatforms = parseSocialPlatforms(creator.social_platforms);
-  const pastWork = parsePastWork(creator.past_work);
-  const avgEngagement = socialPlatforms.length > 0
-    ? (socialPlatforms.reduce((sum, p) => sum + parseFloat(p.engagementRate || "0"), 0) / socialPlatforms.length).toFixed(1)
-    : "0";
+  const totalFollowers = creator.twitter_followers + (creator.youtube_subscribers || 0);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -108,36 +98,33 @@ const CreatorProfile = () => {
               <div className="flex-1">
                 <div className="flex flex-wrap items-center gap-3 mb-2">
                   <h1 className="text-3xl font-black">
-                    {creator.display_name || creator.full_name || "Anonymous Creator"}
+                    {creator.display_name || "Anonymous Creator"}
                   </h1>
-                  {creator.verification_status === "verified" && (
+                  {creator.verified && (
                     <Badge className="bg-foreground text-background">
                       <CheckCircle size={12} className="mr-1" />
                       Verified
                     </Badge>
                   )}
-                  {creator.verification_status === "pending" && (
-                    <Badge variant="outline">Pending Verification</Badge>
-                  )}
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4 text-muted-foreground mb-4">
                   <span className="flex items-center gap-1">
-                    {getTierIcon(creator.tier)} {creator.tier || "Pioneer"} Tier
+                    {getTierIcon(creator.tier)} {creator.tier || "bronze"} Tier
                   </span>
-                  {creator.country && (
+                  {creator.regions && creator.regions.length > 0 && (
                     <span className="flex items-center gap-1">
-                      {getCountryFlag(creator.country)} {creator.city ? `${creator.city}, ` : ""}{creator.country}
+                      🌍 {creator.regions[0]}
                     </span>
                   )}
                   <span className="flex items-center gap-1">
                     <Users size={14} />
-                    {formatFollowers(creator.total_followers)} followers
+                    {formatFollowers(totalFollowers)} followers
                   </span>
                 </div>
 
-                {creator.short_bio && (
-                  <p className="text-muted-foreground mb-6 max-w-2xl">{creator.short_bio}</p>
+                {creator.bio && (
+                  <p className="text-muted-foreground mb-6 max-w-2xl">{creator.bio}</p>
                 )}
 
                 <div className="flex gap-3">
@@ -156,60 +143,57 @@ const CreatorProfile = () => {
             <h2 className="text-xl font-bold mb-6">Platform Stats</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               <div className="glass-card rounded-xl p-4 text-center">
-                <div className="text-2xl font-bold">{formatFollowers(creator.total_followers)}</div>
+                <div className="text-2xl font-bold">{formatFollowers(totalFollowers)}</div>
                 <div className="text-sm text-muted-foreground">Total Followers</div>
               </div>
               <div className="glass-card rounded-xl p-4 text-center">
-                <div className="text-2xl font-bold">{avgEngagement}%</div>
-                <div className="text-sm text-muted-foreground">Avg Engagement</div>
+                <div className="text-2xl font-bold">{creator.twitter_followers ? formatFollowers(creator.twitter_followers) : '0'}</div>
+                <div className="text-sm text-muted-foreground">Twitter</div>
               </div>
               <div className="glass-card rounded-xl p-4 text-center">
-                <div className="text-2xl font-bold">{socialPlatforms.length}</div>
-                <div className="text-sm text-muted-foreground">Platforms</div>
+                <div className="text-2xl font-bold">{creator.youtube_subscribers ? formatFollowers(creator.youtube_subscribers) : '0'}</div>
+                <div className="text-sm text-muted-foreground">YouTube</div>
               </div>
               <div className="glass-card rounded-xl p-4 text-center">
-                <div className="text-2xl font-bold">{creator.min_budget || "Contact"}</div>
+                <div className="text-2xl font-bold">Contact</div>
                 <div className="text-sm text-muted-foreground">Min Budget</div>
               </div>
             </div>
 
-            {/* Social Platforms */}
-            {socialPlatforms.length > 0 && (
-              <div className="mb-8">
-                <h3 className="font-bold mb-4">Platforms</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {socialPlatforms.map((platform, index) => (
-                    <div key={index} className="glass-card rounded-xl p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <div className="font-bold">{platform.platform}</div>
-                        <Badge variant="outline">{formatFollowers(platform.followers)}</Badge>
-                      </div>
-                      <div className="text-sm text-muted-foreground mb-2">@{platform.handle}</div>
-                      <div className="flex items-center gap-4 text-sm">
-                        <span>{platform.engagementRate}% engagement</span>
-                      </div>
-                      {platform.contentType && platform.contentType.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mt-2">
-                          {platform.contentType.map((type) => (
-                            <Badge key={type} variant="secondary" className="text-xs">
-                              {type}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
+            {/* Social Handles */}
+            <div className="mb-8">
+              <h3 className="font-bold mb-4">Platforms</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {creator.twitter_handle && (
+                  <div className="glass-card rounded-xl p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="font-bold">Twitter</div>
+                      <Badge variant="outline">{formatFollowers(creator.twitter_followers)}</Badge>
                     </div>
-                  ))}
-                </div>
+                    <div className="text-sm text-muted-foreground">@{creator.twitter_handle}</div>
+                  </div>
+                )}
+                {creator.discord_handle && (
+                  <div className="glass-card rounded-xl p-4">
+                    <div className="font-bold mb-2">Discord</div>
+                    <div className="text-sm text-muted-foreground">{creator.discord_handle}</div>
+                  </div>
+                )}
+                {creator.telegram_handle && (
+                  <div className="glass-card rounded-xl p-4">
+                    <div className="font-bold mb-2">Telegram</div>
+                    <div className="text-sm text-muted-foreground">@{creator.telegram_handle}</div>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </section>
 
-        {/* Niches & Deliverables */}
+        {/* Niches */}
         <section className="section-padding py-12 bg-foreground/5">
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8">
-              {/* Niches */}
               {creator.niches && creator.niches.length > 0 && (
                 <div>
                   <h3 className="font-bold mb-4">Niches & Ecosystems</h3>
@@ -223,14 +207,13 @@ const CreatorProfile = () => {
                 </div>
               )}
 
-              {/* Deliverables */}
-              {creator.deliverables && creator.deliverables.length > 0 && (
+              {creator.languages && creator.languages.length > 0 && (
                 <div>
-                  <h3 className="font-bold mb-4">Services Offered</h3>
+                  <h3 className="font-bold mb-4">Languages</h3>
                   <div className="flex flex-wrap gap-2">
-                    {creator.deliverables.map((deliverable) => (
-                      <Badge key={deliverable} variant="outline" className="px-3 py-1">
-                        {deliverable}
+                    {creator.languages.map((lang) => (
+                      <Badge key={lang} variant="outline" className="px-3 py-1">
+                        {lang}
                       </Badge>
                     ))}
                   </div>
@@ -239,49 +222,6 @@ const CreatorProfile = () => {
             </div>
           </div>
         </section>
-
-        {/* Past Work */}
-        {pastWork.length > 0 && (
-          <section className="section-padding py-12">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                <Briefcase size={20} />
-                Past Work
-              </h2>
-              <div className="space-y-4">
-                {pastWork.map((work) => (
-                  <div key={work.id} className="glass-card rounded-xl p-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <div className="font-bold">{work.projectName}</div>
-                        <Badge variant="secondary" className="text-xs mt-1">
-                          {work.campaignType}
-                        </Badge>
-                      </div>
-                      {work.proofLink && (
-                        <a 
-                          href={work.proofLink} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-muted-foreground hover:text-foreground"
-                        >
-                          <ExternalLink size={16} />
-                        </a>
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-2">{work.whatYouDid}</p>
-                    {work.results && (
-                      <p className="text-sm">
-                        <span className="font-medium">Results: </span>
-                        {work.results}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
 
         {/* CTA */}
         <section className="section-padding py-16 bg-foreground text-background">

@@ -4,69 +4,39 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Star, CheckSquare, TrendingUp, Award, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 
 export default function DashboardOverview() {
-  const { profile, roles, user } = useAuth();
+  const { profile, roles } = useAuth();
   const navigate = useNavigate();
-
-  const { data: submissions } = useQuery({
-    queryKey: ['taskSubmissions', user?.id],
-    queryFn: async () => {
-      if (!user) return [];
-      const { data } = await supabase
-        .from('task_submissions')
-        .select('*')
-        .eq('user_id', user.id);
-      return data || [];
-    },
-    enabled: !!user,
-  });
-
-  const { data: allTasks } = useQuery({
-    queryKey: ['allTasks'],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('tasks')
-        .select('*')
-        .eq('is_active', true);
-      return data || [];
-    },
-  });
-
-  const completedCount = submissions?.filter(t => t.status === 'approved').length || 0;
-  const pendingCount = submissions?.filter(t => t.status === 'submitted' || t.status === 'under_review').length || 0;
-  const totalTasks = allTasks?.length || 0;
 
   const stats = [
     { 
       title: 'Total XP', 
       value: profile?.xp || 0, 
       icon: Star, 
-      color: 'text-yellow-500',
-      bgColor: 'bg-yellow-500/10'
+      color: 'text-primary',
+      bgColor: 'bg-primary/10'
     },
     { 
       title: 'Tasks Completed', 
-      value: completedCount, 
+      value: 0, 
       icon: CheckSquare, 
-      color: 'text-green-500',
-      bgColor: 'bg-green-500/10'
+      color: 'text-primary',
+      bgColor: 'bg-primary/10'
     },
     { 
       title: 'Pending Review', 
-      value: pendingCount, 
+      value: 0, 
       icon: TrendingUp, 
-      color: 'text-blue-500',
-      bgColor: 'bg-blue-500/10'
+      color: 'text-primary',
+      bgColor: 'bg-primary/10'
     },
     { 
       title: 'Available Tasks', 
-      value: Math.max(totalTasks - completedCount, 0), 
+      value: 0, 
       icon: Award, 
-      color: 'text-purple-500',
-      bgColor: 'bg-purple-500/10'
+      color: 'text-primary',
+      bgColor: 'bg-primary/10'
     },
   ];
 
