@@ -1,14 +1,58 @@
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Star, TrendingUp, Award } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+
+interface XPTransaction {
+  id: string;
+  amount: number;
+  reason: string;
+  source_type: string | null;
+  created_at: string;
+}
 
 export function XPWidget() {
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
+  const [monthlyXP, setMonthlyXP] = useState(0);
+
+  useEffect(() => {
+    const fetchMonthlyXP = async () => {
+      if (!user) return;
+
+      const startOfMonth = new Date();
+      startOfMonth.setDate(1);
+      startOfMonth.setHours(0, 0, 0, 0);
+
+      const { data } = await supabase
+        .from('xp_transactions')
+        .select('amount')
+        .eq('user_id', user.id)
+        .gte('created_at', startOfMonth.toISOString());
+
+      if (data) {
+        const total = data.reduce((sum, tx) => sum + tx.amount, 0);
+        setMonthlyXP(total);
+      }
+    };
+
+    fetchMonthlyXP();
+  }, [user]);
 
   const totalXP = profile?.xp || 0;
   const nextMilestone = 500;
   const progress = Math.min((totalXP / nextMilestone) * 100, 100);
+
+  const getRank = (xp: number) => {
+    if (xp >= 10000) return 'Legend';
+    if (xp >= 5000) return 'Diamond';
+    if (xp >= 2500) return 'Platinum';
+    if (xp >= 1000) return 'Gold';
+    if (xp >= 500) return 'Silver';
+    if (xp >= 100) return 'Bronze';
+    return 'Starter';
+  };
 
   return (
     <Card className="border-border/50">
@@ -41,14 +85,14 @@ export function XPWidget() {
               <TrendingUp className="w-4 h-4" />
               <span className="text-xs">This Month</span>
             </div>
-            <span className="font-bold">0 XP</span>
+            <span className="font-bold">{monthlyXP} XP</span>
           </div>
           <div className="p-3 bg-muted/50 rounded-lg">
             <div className="flex items-center gap-2 text-muted-foreground mb-1">
               <Award className="w-4 h-4" />
               <span className="text-xs">Rank</span>
             </div>
-            <span className="font-bold">Starter</span>
+            <span className="font-bold">{getRank(totalXP)}</span>
           </div>
         </div>
 

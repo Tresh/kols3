@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
+import { AvatarUpload } from '@/components/profile/AvatarUpload';
 
 export default function DashboardSettings() {
   const { profile, user, refreshProfile } = useAuth();
@@ -49,6 +50,24 @@ export default function DashboardSettings() {
           <h1 className="text-2xl font-bold">Settings</h1>
           <p className="text-muted-foreground">Manage your account preferences</p>
         </div>
+
+        {/* Profile Picture */}
+        <Card className="border-border/50">
+          <CardHeader>
+            <CardTitle>Profile Picture</CardTitle>
+            <CardDescription>Upload a profile picture (max 10MB, will be compressed)</CardDescription>
+          </CardHeader>
+          <CardContent className="flex items-center gap-6">
+            <AvatarUpload 
+              currentAvatarUrl={profile?.avatar_url} 
+              size="lg"
+            />
+            <div className="text-sm text-muted-foreground">
+              <p>Click on your avatar to upload a new photo.</p>
+              <p className="mt-1">Images are automatically compressed to 256x256px.</p>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Account Settings */}
         <Card className="border-border/50">

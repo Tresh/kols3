@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { User, Briefcase, Building2, Mail, Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ForgotPasswordModal } from '@/components/auth/ForgotPasswordModal';
 
 type AuthMode = 'login' | 'signup';
 type UserRole = 'creator' | 'project' | 'marketer';
@@ -27,6 +28,7 @@ export default function Auth() {
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -227,6 +229,16 @@ export default function Auth() {
                 )}
               </Button>
 
+              {mode === 'login' && (
+                <button
+                  type="button"
+                  onClick={() => setForgotPasswordOpen(true)}
+                  className="w-full text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Forgot your password?
+                </button>
+              )}
+
               <div className="text-center text-sm">
                 {mode === 'signup' ? (
                   <p className="text-muted-foreground">
@@ -255,6 +267,12 @@ export default function Auth() {
             </form>
           </CardContent>
         </Card>
+
+        <ForgotPasswordModal
+          open={forgotPasswordOpen}
+          onOpenChange={setForgotPasswordOpen}
+          onBackToLogin={() => setMode('login')}
+        />
       </main>
       <Footer />
     </div>
