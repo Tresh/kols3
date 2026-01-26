@@ -62,18 +62,22 @@ export default function Auth() {
             console.error('Role insert error:', roleError);
           }
 
-          // Create initial creator profile if creator role
+          // Create role-specific profile
           if (selectedRole === 'creator') {
-            const { error: profileError } = await supabase
-              .from('creator_profiles')
-              .insert({ 
-                user_id: data.user.id,
-                email: email,
-              });
-
-            if (profileError) {
-              console.error('Creator profile error:', profileError);
-            }
+            await supabase.from('creator_profiles').insert({ 
+              user_id: data.user.id,
+              email: email,
+            });
+          } else if (selectedRole === 'marketer') {
+            await supabase.from('marketer_profiles').insert({ 
+              user_id: data.user.id,
+              email: email,
+            });
+          } else if (selectedRole === 'project') {
+            await supabase.from('project_profiles').insert({ 
+              user_id: data.user.id,
+              email: email,
+            });
           }
         }
 
