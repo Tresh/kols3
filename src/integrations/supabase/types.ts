@@ -14,6 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
+      campaign_participants: {
+        Row: {
+          campaign_id: string
+          completed_at: string | null
+          id: string
+          joined_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          campaign_id: string
+          completed_at?: string | null
+          id?: string
+          joined_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          campaign_id?: string
+          completed_at?: string | null
+          id?: string
+          joined_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_participants_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaigns: {
+        Row: {
+          budget_currency: string | null
+          budget_total: number | null
+          created_at: string
+          description: string | null
+          end_date: string | null
+          id: string
+          is_public: boolean | null
+          max_participants: number | null
+          owner_user_id: string
+          requirements: Json | null
+          rewards: Json | null
+          start_date: string | null
+          status: string
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          budget_currency?: string | null
+          budget_total?: number | null
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_public?: boolean | null
+          max_participants?: number | null
+          owner_user_id: string
+          requirements?: Json | null
+          rewards?: Json | null
+          start_date?: string | null
+          status?: string
+          title: string
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          budget_currency?: string | null
+          budget_total?: number | null
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_public?: boolean | null
+          max_participants?: number | null
+          owner_user_id?: string
+          requirements?: Json | null
+          rewards?: Json | null
+          start_date?: string | null
+          status?: string
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       creator_profiles: {
         Row: {
           avatar_url: string | null
@@ -83,6 +175,92 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          link: string | null
+          message: string | null
+          read: boolean | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          link?: string | null
+          message?: string | null
+          read?: boolean | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          link?: string | null
+          message?: string | null
+          read?: boolean | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      offers: {
+        Row: {
+          budget_amount: number | null
+          budget_currency: string | null
+          created_at: string
+          creator_id: string
+          deadline: string | null
+          deliverables: Json | null
+          description: string | null
+          id: string
+          project_user_id: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          budget_amount?: number | null
+          budget_currency?: string | null
+          created_at?: string
+          creator_id: string
+          deadline?: string | null
+          deliverables?: Json | null
+          description?: string | null
+          id?: string
+          project_user_id: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          budget_amount?: number | null
+          budget_currency?: string | null
+          created_at?: string
+          creator_id?: string
+          deadline?: string | null
+          deliverables?: Json | null
+          description?: string | null
+          id?: string
+          project_user_id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "offers_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "creator_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -125,6 +303,81 @@ export type Database = {
         }
         Relationships: []
       }
+      tasks: {
+        Row: {
+          assigned_user_id: string
+          campaign_id: string | null
+          created_at: string
+          deliverable_type: string | null
+          description: string | null
+          due_date: string | null
+          id: string
+          offer_id: string | null
+          proof_notes: string | null
+          proof_url: string | null
+          reviewed_at: string | null
+          status: string
+          submitted_at: string | null
+          title: string
+          token_reward: number | null
+          updated_at: string
+          xp_reward: number | null
+        }
+        Insert: {
+          assigned_user_id: string
+          campaign_id?: string | null
+          created_at?: string
+          deliverable_type?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          offer_id?: string | null
+          proof_notes?: string | null
+          proof_url?: string | null
+          reviewed_at?: string | null
+          status?: string
+          submitted_at?: string | null
+          title: string
+          token_reward?: number | null
+          updated_at?: string
+          xp_reward?: number | null
+        }
+        Update: {
+          assigned_user_id?: string
+          campaign_id?: string | null
+          created_at?: string
+          deliverable_type?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          offer_id?: string | null
+          proof_notes?: string | null
+          proof_url?: string | null
+          reviewed_at?: string | null
+          status?: string
+          submitted_at?: string | null
+          title?: string
+          token_reward?: number | null
+          updated_at?: string
+          xp_reward?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -142,6 +395,36 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      xp_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          reason: string
+          source_id: string | null
+          source_type: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          reason: string
+          source_id?: string | null
+          source_type?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          reason?: string
+          source_id?: string | null
+          source_type?: string | null
           user_id?: string
         }
         Relationships: []

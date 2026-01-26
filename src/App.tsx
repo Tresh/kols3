@@ -22,6 +22,7 @@ import SelfMarketing from "./pages/SelfMarketing";
 import FounderNetwork from "./pages/FounderNetwork";
 import CampaignLaunchpad from "./pages/CampaignLaunchpad";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import DashboardOverview from "./pages/DashboardOverview";
 import DashboardDeals from "./pages/DashboardDeals";
 import DashboardCampaigns from "./pages/DashboardCampaigns";
@@ -45,6 +46,7 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/about" element={<About />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/kol-campaigns" element={<KOLCampaigns />} />
               <Route path="/ambassador-programs" element={<AmbassadorLaunchpad />} />
               <Route path="/kol-market" element={<KOLMarket />} />
