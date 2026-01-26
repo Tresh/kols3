@@ -4,14 +4,13 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 interface EmailRequest {
   email: string;
   confirmationUrl: string;
-  type: 'signup' | 'recovery' | 'email_change';
+  type: "signup" | "recovery" | "email_change";
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -32,7 +31,7 @@ const handler = async (req: Request): Promise<Response> => {
     let htmlContent = "";
 
     switch (type) {
-      case 'signup':
+      case "signup":
         subject = "Welcome to KOLs3 - Verify Your Email";
         htmlContent = `
           <!DOCTYPE html>
@@ -96,7 +95,7 @@ const handler = async (req: Request): Promise<Response> => {
         `;
         break;
 
-      case 'recovery':
+      case "recovery":
         subject = "Reset Your KOLs3 Password";
         htmlContent = `
           <!DOCTYPE html>
@@ -162,10 +161,10 @@ const handler = async (req: Request): Promise<Response> => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
+        Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "KOLs3 <noreply@kols3.com>",
+        from: "KOLs3 <noreply@kols3.io>",
         to: [email],
         subject,
         html: htmlContent,
@@ -184,13 +183,10 @@ const handler = async (req: Request): Promise<Response> => {
     });
   } catch (error: any) {
     console.error("Error in send-verification-email function:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      }
-    );
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json", ...corsHeaders },
+    });
   }
 };
 
