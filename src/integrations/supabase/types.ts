@@ -175,6 +175,72 @@ export type Database = {
         }
         Relationships: []
       }
+      marketer_profiles: {
+        Row: {
+          agency_name: string | null
+          avatar_url: string | null
+          bio: string | null
+          campaign_types: string[] | null
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          is_agency: boolean | null
+          previous_projects: Json | null
+          pricing_model: string | null
+          profile_completed: boolean | null
+          services_offered: string[] | null
+          updated_at: string
+          user_id: string
+          verified: boolean | null
+          website_url: string | null
+        }
+        Insert: {
+          agency_name?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          campaign_types?: string[] | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          is_agency?: boolean | null
+          previous_projects?: Json | null
+          pricing_model?: string | null
+          profile_completed?: boolean | null
+          services_offered?: string[] | null
+          updated_at?: string
+          user_id: string
+          verified?: boolean | null
+          website_url?: string | null
+        }
+        Update: {
+          agency_name?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          campaign_types?: string[] | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          is_agency?: boolean | null
+          previous_projects?: Json | null
+          pricing_model?: string | null
+          profile_completed?: boolean | null
+          services_offered?: string[] | null
+          updated_at?: string
+          user_id?: string
+          verified?: boolean | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
@@ -303,6 +369,139 @@ export type Database = {
         }
         Relationships: []
       }
+      project_profiles: {
+        Row: {
+          budget_range: string | null
+          created_at: string
+          description: string | null
+          ecosystem: string | null
+          email: string | null
+          id: string
+          logo_url: string | null
+          marketing_goals_1month: string | null
+          marketing_goals_1year: string | null
+          marketing_goals_6month: string | null
+          profile_completed: boolean | null
+          project_name: string | null
+          support_types: string[] | null
+          updated_at: string
+          user_id: string
+          verified: boolean | null
+          website_url: string | null
+        }
+        Insert: {
+          budget_range?: string | null
+          created_at?: string
+          description?: string | null
+          ecosystem?: string | null
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          marketing_goals_1month?: string | null
+          marketing_goals_1year?: string | null
+          marketing_goals_6month?: string | null
+          profile_completed?: boolean | null
+          project_name?: string | null
+          support_types?: string[] | null
+          updated_at?: string
+          user_id: string
+          verified?: boolean | null
+          website_url?: string | null
+        }
+        Update: {
+          budget_range?: string | null
+          created_at?: string
+          description?: string | null
+          ecosystem?: string | null
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          marketing_goals_1month?: string | null
+          marketing_goals_1year?: string | null
+          marketing_goals_6month?: string | null
+          profile_completed?: boolean | null
+          project_name?: string | null
+          support_types?: string[] | null
+          updated_at?: string
+          user_id?: string
+          verified?: boolean | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      proof_of_work: {
+        Row: {
+          campaign_id: string | null
+          created_at: string
+          id: string
+          offer_id: string | null
+          proof_description: string | null
+          proof_type: string
+          proof_url: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reviewer_notes: string | null
+          status: string
+          task_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          campaign_id?: string | null
+          created_at?: string
+          id?: string
+          offer_id?: string | null
+          proof_description?: string | null
+          proof_type?: string
+          proof_url?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          status?: string
+          task_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          campaign_id?: string | null
+          created_at?: string
+          id?: string
+          offer_id?: string | null
+          proof_description?: string | null
+          proof_type?: string
+          proof_url?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          status?: string
+          task_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "proof_of_work_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "proof_of_work_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "proof_of_work_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tasks: {
         Row: {
           assigned_user_id: string
@@ -377,6 +576,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_balances: {
+        Row: {
+          created_at: string
+          id: string
+          pending_usdt: number | null
+          updated_at: string
+          usdt_balance: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pending_usdt?: number | null
+          updated_at?: string
+          usdt_balance?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pending_usdt?: number | null
+          updated_at?: string
+          usdt_balance?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {

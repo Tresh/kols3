@@ -31,6 +31,32 @@ import DashboardHistory from "./pages/DashboardHistory";
 import DashboardProfile from "./pages/DashboardProfile";
 import DashboardSettings from "./pages/DashboardSettings";
 
+// Role-specific dashboards
+import CreatorDashboard from "./pages/dashboard/creator/CreatorDashboard";
+import CreatorOffers from "./pages/dashboard/creator/CreatorOffers";
+import CreatorPrograms from "./pages/dashboard/creator/CreatorPrograms";
+import CreatorTasks from "./pages/dashboard/creator/CreatorTasks";
+import CreatorProofOfWork from "./pages/dashboard/creator/CreatorProofOfWork";
+import CreatorWallet from "./pages/dashboard/creator/CreatorWallet";
+import CreatorProfilePage from "./pages/dashboard/creator/CreatorProfilePage";
+import CreatorSettings from "./pages/dashboard/creator/CreatorSettings";
+
+import MarketerDashboard from "./pages/dashboard/marketer/MarketerDashboard";
+import MarketerProfile from "./pages/dashboard/marketer/MarketerProfile";
+import MarketerOffers from "./pages/dashboard/marketer/MarketerOffers";
+import MarketerCampaigns from "./pages/dashboard/marketer/MarketerCampaigns";
+import MarketerTasks from "./pages/dashboard/marketer/MarketerTasks";
+import MarketerProofOfWork from "./pages/dashboard/marketer/MarketerProofOfWork";
+import MarketerSettings from "./pages/dashboard/marketer/MarketerSettings";
+
+import ProjectDashboard from "./pages/dashboard/project/ProjectDashboard";
+import ProjectAIRecommendations from "./pages/dashboard/project/ProjectAIRecommendations";
+import ProjectCampaigns from "./pages/dashboard/project/ProjectCampaigns";
+import ProjectOffers from "./pages/dashboard/project/ProjectOffers";
+import ProjectTalentDiscovery from "./pages/dashboard/project/ProjectTalentDiscovery";
+import ProjectTasks from "./pages/dashboard/project/ProjectTasks";
+import ProjectSettings from "./pages/dashboard/project/ProjectSettings";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -58,7 +84,8 @@ const App = () => (
               <Route path="/ai-marketing" element={<SelfMarketing />} />
               <Route path="/founder-network" element={<FounderNetwork />} />
               <Route path="/campaign-launchpad" element={<CampaignLaunchpad />} />
-              {/* Dashboard routes */}
+              
+              {/* Legacy dashboard routes */}
               <Route path="/dashboard" element={<DashboardOverview />} />
               <Route path="/dashboard/deals" element={<DashboardDeals />} />
               <Route path="/dashboard/campaigns" element={<DashboardCampaigns />} />
@@ -66,6 +93,35 @@ const App = () => (
               <Route path="/dashboard/history" element={<DashboardHistory />} />
               <Route path="/dashboard/profile" element={<DashboardProfile />} />
               <Route path="/dashboard/settings" element={<DashboardSettings />} />
+              
+              {/* Creator Dashboard Routes */}
+              <Route path="/dashboard/creator" element={<CreatorDashboard />} />
+              <Route path="/dashboard/creator/profile" element={<CreatorProfilePage />} />
+              <Route path="/dashboard/creator/offers" element={<CreatorOffers />} />
+              <Route path="/dashboard/creator/programs" element={<CreatorPrograms />} />
+              <Route path="/dashboard/creator/tasks" element={<CreatorTasks />} />
+              <Route path="/dashboard/creator/proof-of-work" element={<CreatorProofOfWork />} />
+              <Route path="/dashboard/creator/wallet" element={<CreatorWallet />} />
+              <Route path="/dashboard/creator/settings" element={<CreatorSettings />} />
+              
+              {/* Marketer Dashboard Routes */}
+              <Route path="/dashboard/marketer" element={<MarketerDashboard />} />
+              <Route path="/dashboard/marketer/profile" element={<MarketerProfile />} />
+              <Route path="/dashboard/marketer/offers" element={<MarketerOffers />} />
+              <Route path="/dashboard/marketer/campaigns" element={<MarketerCampaigns />} />
+              <Route path="/dashboard/marketer/tasks" element={<MarketerTasks />} />
+              <Route path="/dashboard/marketer/proof-of-work" element={<MarketerProofOfWork />} />
+              <Route path="/dashboard/marketer/settings" element={<MarketerSettings />} />
+              
+              {/* Project Dashboard Routes */}
+              <Route path="/dashboard/project" element={<ProjectDashboard />} />
+              <Route path="/dashboard/project/ai-recommendations" element={<ProjectAIRecommendations />} />
+              <Route path="/dashboard/project/campaigns" element={<ProjectCampaigns />} />
+              <Route path="/dashboard/project/offers" element={<ProjectOffers />} />
+              <Route path="/dashboard/project/talent" element={<ProjectTalentDiscovery />} />
+              <Route path="/dashboard/project/tasks" element={<ProjectTasks />} />
+              <Route path="/dashboard/project/settings" element={<ProjectSettings />} />
+              
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
