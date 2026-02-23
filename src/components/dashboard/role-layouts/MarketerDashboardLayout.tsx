@@ -85,7 +85,7 @@ function MarketerSidebar() {
                     <NavLink 
                       to={item.url} 
                       end={item.url === '/dashboard/marketer'}
-                      className="hover:bg-muted/50" 
+                      className="" 
                       activeClassName="bg-muted text-primary font-medium"
                     >
                       <item.icon className="mr-2 h-4 w-4" />
