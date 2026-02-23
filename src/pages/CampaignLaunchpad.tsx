@@ -180,7 +180,7 @@ const CampaignLaunchpad = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {campaignTypes.map((campaign) => (
                 <Card key={campaign.id} className="glass-card-hover border-border/50 group">
                   <CardHeader>
@@ -191,10 +191,10 @@ const CampaignLaunchpad = () => {
                     <CardDescription className="mb-6 min-h-[80px]">
                       {campaign.description}
                     </CardDescription>
-                    <Button variant="outline" className="w-full" asChild>
+                    <Button variant="outline" className="w-full text-xs sm:text-sm whitespace-normal h-auto py-2" asChild>
                       <Link to={campaign.href}>
                         {campaign.cta}
-                        <ArrowRight className="ml-2 h-4 w-4" />
+                        <ArrowRight className="ml-2 h-4 w-4 shrink-0" />
                       </Link>
                     </Button>
                   </CardContent>
