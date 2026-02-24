@@ -57,6 +57,15 @@ import ProjectTalentDiscovery from "./pages/dashboard/project/ProjectTalentDisco
 import ProjectTasks from "./pages/dashboard/project/ProjectTasks";
 import ProjectSettings from "./pages/dashboard/project/ProjectSettings";
 
+// Admin Dashboard Routes
+import AdminDashboard from "./pages/dashboard/admin/AdminDashboard";
+import AdminCampaigns from "./pages/dashboard/admin/AdminCampaigns";
+import AdminUsers from "./pages/dashboard/admin/AdminUsers";
+import AdminRoles from "./pages/dashboard/admin/AdminRoles";
+import AdminTasks from "./pages/dashboard/admin/AdminTasks";
+import AdminProofOfWork from "./pages/dashboard/admin/AdminProofOfWork";
+import AdminSettings from "./pages/dashboard/admin/AdminSettings";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -122,6 +131,16 @@ const App = () => (
               <Route path="/dashboard/project/tasks" element={<ProjectTasks />} />
               <Route path="/dashboard/project/settings" element={<ProjectSettings />} />
               
+              
+              {/* Admin Dashboard Routes */}
+              <Route path="/dashboard/admin" element={<AdminDashboard />} />
+              <Route path="/dashboard/admin/campaigns" element={<AdminCampaigns />} />
+              <Route path="/dashboard/admin/users" element={<AdminUsers />} />
+              <Route path="/dashboard/admin/roles" element={<AdminRoles />} />
+              <Route path="/dashboard/admin/tasks" element={<AdminTasks />} />
+              <Route path="/dashboard/admin/proof-of-work" element={<AdminProofOfWork />} />
+              <Route path="/dashboard/admin/settings" element={<AdminSettings />} />
+
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
