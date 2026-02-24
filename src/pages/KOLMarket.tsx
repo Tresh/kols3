@@ -451,10 +451,10 @@ const KOLMarket = () => {
                   <Input placeholder="e.g., 2 weeks" className="bg-background" />
                 </div>
               </div>
-              <Button variant="hero" size="lg" className="w-full md:w-auto" disabled>
-                <Sparkles size={18} className="mr-2" />
-                Get AI Recommendations
-                <Badge variant="secondary" className="ml-2 text-xs">Coming Soon</Badge>
+              <Button variant="hero" size="lg" className="w-full md:w-auto whitespace-normal h-auto py-3" disabled>
+                <Sparkles size={18} className="mr-2 shrink-0" />
+                <span>Get AI Recommendations</span>
+                <Badge variant="secondary" className="ml-2 text-xs shrink-0">Coming Soon</Badge>
               </Button>
             </div>
           </div>

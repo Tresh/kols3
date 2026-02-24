@@ -24,11 +24,12 @@ import {
   Megaphone, 
   Settings, 
   LogOut,
-  Briefcase,
   Menu,
   Sparkles,
   Send
 } from 'lucide-react';
+import logo from '@/assets/kols3-logo.png';
+import { useTheme } from '@/components/ThemeProvider';
 import { Button } from '@/components/ui/button';
 import { ProjectSetupModal } from '../ProjectSetupModal';
 
@@ -51,6 +52,7 @@ function ProjectSidebar() {
   const { signOut, profile } = useAuth();
   const navigate = useNavigate();
   const { state } = useSidebar();
+  const { theme } = useTheme();
   const collapsed = state === 'collapsed';
 
   const handleLogout = async () => {
@@ -62,9 +64,7 @@ function ProjectSidebar() {
     <Sidebar className={collapsed ? 'w-14' : 'w-60'} collapsible="icon">
       <div className="p-4 border-b border-border">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
-            <Briefcase className="w-4 h-4 text-accent-foreground" />
-          </div>
+          <img src={logo} alt="KOLS3" className={`w-8 h-8 rounded-full object-contain ${theme === 'dark' ? 'invert' : ''}`} />
           {!collapsed && (
             <div>
               <div className="font-bold text-sm">KOLs3 Project</div>

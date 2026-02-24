@@ -194,9 +194,9 @@ const SelfMarketing = () => {
                 </div>
               </div>
 
-              <Button variant="hero" className="w-full" disabled>
-                <Brain className="w-4 h-4 mr-2" />
-                Generate AI Recommendations — Coming Soon
+              <Button variant="hero" className="w-full whitespace-normal h-auto py-3" disabled>
+                <Brain className="w-4 h-4 mr-2 shrink-0" />
+                <span>Generate AI Recommendations — Coming Soon</span>
               </Button>
             </div>
           </div>
