@@ -214,11 +214,12 @@ const AmbassadorLaunchpad = () => {
                   <Input placeholder="e.g., Points + Monthly Token Drops + Bonuses" className="bg-background" />
                 </div>
               </div>
-              <Button variant="hero" size="lg" className="w-full whitespace-normal h-auto py-3" disabled>
-                <Sparkles size={18} className="mr-2 shrink-0" />
-                <span>Create Program</span>
-                <Badge variant="secondary" className="ml-2 text-xs shrink-0">Coming Soon</Badge>
-              </Button>
+              <div className="flex flex-col items-center gap-2">
+                <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
+                <Button variant="hero" size="lg" className="w-full" disabled>
+                  Create Program
+                </Button>
+              </div>
             </div>
           </div>
         </section>

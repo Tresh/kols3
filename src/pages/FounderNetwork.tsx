@@ -152,10 +152,12 @@ const FounderNetwork = () => {
                 </div>
               </div>
 
-              <Button variant="hero" className="w-full whitespace-normal h-auto py-3" disabled>
-                <Sparkles className="w-4 h-4 mr-2 shrink-0" />
-                <span>Find Matching Partners — Coming Soon</span>
-              </Button>
+              <div className="flex flex-col items-center gap-2">
+                <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
+                <Button variant="hero" className="w-full" disabled>
+                  Find Matching Partners
+                </Button>
+              </div>
             </div>
           </div>
         </section>
