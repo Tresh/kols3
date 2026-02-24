@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Users, Zap } from "lucide-react";
+import { ArrowRight, Users, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const Hero = () => {
@@ -22,7 +22,6 @@ export const Hero = () => {
       <div className="relative z-10 max-w-5xl mx-auto text-center">
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full glass-card mb-6 md:mb-8 animate-fade-in">
-          <Sparkles size={12} className="text-foreground/70" />
           <span className="text-[10px] md:text-xs font-medium text-muted-foreground uppercase tracking-wider">
             Web3 Growth Engine
           </span>

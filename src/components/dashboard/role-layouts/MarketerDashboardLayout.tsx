@@ -24,11 +24,12 @@ import {
   Megaphone, 
   Settings, 
   LogOut,
-  Building2,
   Menu,
   Briefcase,
   FileCheck
 } from 'lucide-react';
+import logo from '@/assets/kols3-logo.png';
+import { useTheme } from '@/components/ThemeProvider';
 import { Button } from '@/components/ui/button';
 import { MarketerProfileModal } from '../MarketerProfileModal';
 
@@ -52,6 +53,7 @@ function MarketerSidebar() {
   const navigate = useNavigate();
   const { state } = useSidebar();
   const collapsed = state === 'collapsed';
+  const { theme } = useTheme();
 
   const handleLogout = async () => {
     await signOut();
@@ -62,9 +64,7 @@ function MarketerSidebar() {
     <Sidebar className={collapsed ? 'w-14' : 'w-60'} collapsible="icon">
       <div className="p-4 border-b border-border">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
-            <Building2 className="w-4 h-4 text-secondary-foreground" />
-          </div>
+          <img src={logo} alt="KOLS3" className={`w-8 h-8 rounded-full object-contain ${theme === 'dark' ? 'invert' : ''}`} />
           {!collapsed && (
             <div>
               <div className="font-bold text-sm">KOLs3 Marketer</div>

@@ -24,12 +24,13 @@ import {
   Megaphone, 
   Settings, 
   LogOut,
-  Star,
   Menu,
   Briefcase,
   FileCheck,
   Wallet
 } from 'lucide-react';
+import logo from '@/assets/kols3-logo.png';
+import { useTheme } from '@/components/ThemeProvider';
 import { Button } from '@/components/ui/button';
 import { CreatorProfileModal } from '../CreatorProfileModal';
 
@@ -54,6 +55,7 @@ function CreatorSidebar() {
   const navigate = useNavigate();
   const { state } = useSidebar();
   const collapsed = state === 'collapsed';
+  const { theme } = useTheme();
 
   const handleLogout = async () => {
     await signOut();
@@ -64,9 +66,7 @@ function CreatorSidebar() {
     <Sidebar className={collapsed ? 'w-14' : 'w-60'} collapsible="icon">
       <div className="p-4 border-b border-border">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-            <Star className="w-4 h-4 text-primary-foreground" />
-          </div>
+          <img src={logo} alt="KOLS3" className={`w-8 h-8 rounded-full object-contain ${theme === 'dark' ? 'invert' : ''}`} />
           {!collapsed && (
             <div>
               <div className="font-bold text-sm">KOLs3 Creator</div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,8 +15,14 @@ import { AvatarUpload } from '@/components/profile/AvatarUpload';
 export default function DashboardSettings() {
   const { profile, user, refreshProfile } = useAuth();
   const { toast } = useToast();
-  const [displayName, setDisplayName] = useState(profile?.display_name || '');
+  const [displayName, setDisplayName] = useState('');
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (profile?.display_name) {
+      setDisplayName(profile.display_name);
+    }
+  }, [profile?.display_name]);
 
   const handleSave = async () => {
     if (!user) return;
@@ -64,7 +70,6 @@ export default function DashboardSettings() {
             />
             <div className="text-sm text-muted-foreground">
               <p>Click on your avatar to upload a new photo.</p>
-              <p className="mt-1">Images are automatically compressed to 256x256px.</p>
             </div>
           </CardContent>
         </Card>
