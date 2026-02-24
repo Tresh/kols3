@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { ApplicationDrawer } from "@/components/ApplicationDrawer";
 import { ComingSoonModal } from "@/components/ComingSoonModal";
 import { UserMenu } from "@/components/layout/UserMenu";
 import logo from "@/assets/kols3-logo.png";
@@ -29,7 +28,6 @@ const moreLinks = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [comingSoonOpen, setComingSoonOpen] = useState(false);
   const location = useLocation();
   const { theme } = useTheme();
@@ -114,9 +112,11 @@ export const Navbar = () => {
               {user ? (
                 <UserMenu />
               ) : (
-                <Button variant="hero" size="sm" onClick={() => setDrawerOpen(true)}>
-                  Join Waitlist
-                </Button>
+                <Link to="/auth">
+                  <Button variant="hero" size="sm">
+                    Get Started
+                  </Button>
+                </Link>
               )}
             </div>
 
@@ -170,9 +170,9 @@ export const Navbar = () => {
                       <Link to="/auth" onClick={() => setIsOpen(false)}>
                         <Button variant="outline" className="w-full">Sign In</Button>
                       </Link>
-                      <Button variant="hero" onClick={() => { setIsOpen(false); setDrawerOpen(true); }}>
-                        Join Waitlist
-                      </Button>
+                      <Link to="/auth" onClick={() => setIsOpen(false)}>
+                        <Button variant="hero" className="w-full">Get Started</Button>
+                      </Link>
                     </>
                   )}
                 </div>
@@ -181,7 +181,6 @@ export const Navbar = () => {
           )}
         </div>
       </nav>
-      <ApplicationDrawer open={drawerOpen} onOpenChange={setDrawerOpen} />
       <ComingSoonModal open={comingSoonOpen} onOpenChange={setComingSoonOpen} />
     </>
   );

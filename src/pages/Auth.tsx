@@ -52,6 +52,11 @@ export default function Auth() {
 
         if (error) throw error;
 
+        // Check if user already exists (Supabase returns a fake user with no identities)
+        if (data.user && data.user.identities && data.user.identities.length === 0) {
+          throw new Error('An account with this email already exists. Please sign in instead.');
+        }
+
         if (data.user) {
           // Insert role
           const { error: roleError } = await supabase
