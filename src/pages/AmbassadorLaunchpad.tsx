@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { ApplicationDrawer } from "@/components/ApplicationDrawer";
+import { Link } from "react-router-dom";
 import { 
   Users, 
   Zap, 
@@ -91,7 +90,6 @@ const adminFeatures = [
 ];
 
 const AmbassadorLaunchpad = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -115,13 +113,17 @@ const AmbassadorLaunchpad = () => {
               task assignment, performance tracking, and payouts — all in one dashboard.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button variant="hero" size="lg" onClick={() => setDrawerOpen(true)}>
-                Launch Program
-                <ArrowRight size={18} />
-              </Button>
-              <Button variant="outline" size="lg" onClick={() => setDrawerOpen(true)}>
-                Start Free
-              </Button>
+              <Link to="/auth">
+                <Button variant="hero" size="lg">
+                  Launch Program
+                  <ArrowRight size={18} />
+                </Button>
+              </Link>
+              <Link to="/auth">
+                <Button variant="outline" size="lg">
+                  Start Free
+                </Button>
+              </Link>
             </div>
 
             {/* What This Replaces */}
@@ -525,21 +527,21 @@ const AmbassadorLaunchpad = () => {
               Stop managing spreadsheets. Start scaling with automation.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button 
-                size="lg" 
-                className="bg-background text-foreground hover:bg-background/90"
-                onClick={() => setDrawerOpen(true)}
-              >
-                Launch Your Ambassador Program
-                <ArrowRight size={18} />
-              </Button>
+              <Link to="/auth">
+                <Button 
+                  size="lg" 
+                  className="bg-background text-foreground hover:bg-background/90"
+                >
+                  Launch Your Ambassador Program
+                  <ArrowRight size={18} />
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
       </main>
 
       <Footer />
-      <ApplicationDrawer open={drawerOpen} onOpenChange={setDrawerOpen} />
     </div>
   );
 };

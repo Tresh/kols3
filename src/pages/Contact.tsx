@@ -28,7 +28,7 @@ const Contact = () => {
           <div className="grid md:grid-cols-2 gap-6 mb-16">
             {/* Email Card - Large */}
             <a 
-              href="mailto:hello@kols3.io"
+              href="mailto:support@kols3.io"
               className="group glass-card rounded-3xl p-8 md:p-10 hover:bg-foreground/5 transition-all duration-300 border border-foreground/10 hover:border-foreground/20"
             >
               <div className="flex items-start justify-between mb-8">
@@ -39,7 +39,7 @@ const Contact = () => {
               </div>
               <h3 className="text-2xl font-bold mb-2">Email Us</h3>
               <p className="text-muted-foreground mb-4">For partnerships, campaigns, and general inquiries</p>
-              <span className="text-lg font-medium">hello@kols3.io</span>
+              <span className="text-lg font-medium">support@kols3.io</span>
             </a>
 
             {/* X (Twitter) Card - Large */}
@@ -108,7 +108,7 @@ const Contact = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
-                href="mailto:hello@kols3.io"
+                href="mailto:support@kols3.io"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-foreground text-background rounded-full font-bold hover:bg-foreground/90 transition-colors"
               >
                 Get Started
