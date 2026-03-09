@@ -39,6 +39,17 @@ export default function DashboardOverview() {
     },
   });
 
+  const { data: myRank } = useQuery({
+    queryKey: ['my-xp-rank', user?.id],
+    queryFn: async () => {
+      if (!user) return null;
+      const { data, error } = await supabase.rpc('get_user_xp_rank', { _user_id: user.id });
+      if (error) return null;
+      return data;
+    },
+    enabled: !!user,
+  });
+
   const activeTasks = tasks.filter(t => ['pending', 'in_progress'].includes(t.status));
   const completedCount = tasks.filter(t => t.status === 'approved').length;
 
@@ -140,13 +151,24 @@ export default function DashboardOverview() {
 
         {/* XP Leaderboard */}
         <Card className="border-border/50">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-primary" /> XP Leaderboard
-            </CardTitle>
-            <CardDescription>Top earners on the platform</CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-primary" /> XP Leaderboard
+              </CardTitle>
+              <CardDescription>Top earners on the platform</CardDescription>
+            </div>
+            <Button variant="ghost" size="sm" onClick={() => navigate('/dashboard/leaderboard')}>
+              View All <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
           </CardHeader>
           <CardContent>
+            {myRank && myRank > 0 && (
+              <div className="flex items-center gap-2 p-2 mb-3 rounded-lg bg-primary/5 border border-primary/20">
+                <span className="text-sm text-muted-foreground">Your position:</span>
+                <span className="font-bold text-primary">#{myRank}</span>
+              </div>
+            )}
             {leaderboardLoading ? (
               <div className="flex justify-center py-8">
                 <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />

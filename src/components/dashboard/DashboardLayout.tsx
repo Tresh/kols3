@@ -26,7 +26,8 @@ import {
   LogOut,
   Menu,
   Briefcase,
-  History
+  History,
+  Trophy
 } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import logo from '@/assets/kols3-logo.png';
@@ -42,6 +43,7 @@ const creatorMenuItems = [
   { title: 'Deals', url: '/dashboard/deals', icon: Briefcase, id: 'deals' },
   { title: 'Campaigns', url: '/dashboard/campaigns', icon: Megaphone, id: 'campaigns' },
   { title: 'Tasks', url: '/dashboard/tasks', icon: CheckSquare, id: 'tasks' },
+  { title: 'Leaderboard', url: '/dashboard/leaderboard', icon: Trophy, id: 'leaderboard' },
   { title: 'History', url: '/dashboard/history', icon: History, id: 'history' },
   { title: 'Profile', url: '/dashboard/profile', icon: User, id: 'profile' },
   { title: 'Settings', url: '/dashboard/settings', icon: Settings, id: 'settings' },
@@ -51,6 +53,7 @@ const projectMenuItems = [
   { title: 'Overview', url: '/dashboard', icon: LayoutDashboard, id: 'overview' },
   { title: 'Campaigns', url: '/dashboard/campaigns', icon: Megaphone, id: 'campaigns' },
   { title: 'Tasks', url: '/dashboard/tasks', icon: CheckSquare, id: 'tasks' },
+  { title: 'Leaderboard', url: '/dashboard/leaderboard', icon: Trophy, id: 'leaderboard' },
   { title: 'Settings', url: '/dashboard/settings', icon: Settings, id: 'settings' },
 ];
 

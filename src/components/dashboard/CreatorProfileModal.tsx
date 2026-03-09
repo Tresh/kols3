@@ -116,30 +116,31 @@ export function CreatorProfileModal({ open, onComplete }: CreatorProfileModalPro
           followers: p.followers,
         }));
 
+      // Find the primary platform for twitter data
+      const twitterPlatform = socialPlatformsData.find(p => p.platform === 'Twitter/X');
+      const discordPlatform = socialPlatformsData.find(p => p.platform === 'Discord');
+      const telegramPlatform = socialPlatformsData.find(p => p.platform === 'Telegram');
+      const youtubePlatform = socialPlatformsData.find(p => p.platform === 'YouTube');
+
       const { error } = await supabase
         .from('creator_profiles')
         .upsert({
           user_id: user.id,
-          full_name: fullName,
           display_name: displayName,
           email: user.email,
-          short_bio: shortBio,
-          country,
-          city,
-          timezone,
+          bio: shortBio,
+          twitter_handle: twitterPlatform?.handle || null,
+          twitter_followers: twitterPlatform?.followers || 0,
+          discord_handle: discordPlatform?.handle || null,
+          telegram_handle: telegramPlatform?.handle || null,
+          youtube_url: youtubePlatform?.handle || null,
+          youtube_subscribers: youtubePlatform?.followers || 0,
           languages,
-          social_platforms: socialPlatformsData,
-          total_followers: totalFollowers,
           tier,
-          continents,
+          regions: continents,
           niches,
-          deliverables,
-          wallet_address: walletAddress,
-          preferred_chain: preferredChain,
-          min_budget: minBudget,
-          payment_methods: paymentMethods,
           profile_completed: true,
-          verification_status: 'pending',
+          verified: false,
         }, { onConflict: 'user_id' });
 
       if (error) throw error;

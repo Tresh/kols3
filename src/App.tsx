@@ -30,6 +30,7 @@ import DashboardTasks from "./pages/DashboardTasks";
 import DashboardHistory from "./pages/DashboardHistory";
 import DashboardProfile from "./pages/DashboardProfile";
 import DashboardSettings from "./pages/DashboardSettings";
+import DashboardLeaderboard from "./pages/DashboardLeaderboard";
 
 // Role-specific dashboards
 import CreatorDashboard from "./pages/dashboard/creator/CreatorDashboard";
@@ -102,6 +103,7 @@ const App = () => (
               <Route path="/dashboard/history" element={<DashboardHistory />} />
               <Route path="/dashboard/profile" element={<DashboardProfile />} />
               <Route path="/dashboard/settings" element={<DashboardSettings />} />
+              <Route path="/dashboard/leaderboard" element={<DashboardLeaderboard />} />
               
               {/* Creator Dashboard Routes */}
               <Route path="/dashboard/creator" element={<CreatorDashboard />} />
