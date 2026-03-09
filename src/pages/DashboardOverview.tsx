@@ -138,6 +138,43 @@ export default function DashboardOverview() {
           </CardContent>
         </Card>
 
+        {/* XP Leaderboard */}
+        <Card className="border-border/50">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-primary" /> XP Leaderboard
+            </CardTitle>
+            <CardDescription>Top earners on the platform</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {leaderboardLoading ? (
+              <div className="flex justify-center py-8">
+                <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : leaderboard.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-6">No XP earned yet. Be the first!</p>
+            ) : (
+              <div className="space-y-3">
+                {leaderboard.map((entry: any, index: number) => (
+                  <div key={index} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/30">
+                    <span className={`w-6 text-center font-bold text-sm ${index < 3 ? 'text-primary' : 'text-muted-foreground'}`}>
+                      {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`}
+                    </span>
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage src={entry.avatar_url} />
+                      <AvatarFallback className="text-xs">{(entry.display_name || '?')[0]}</AvatarFallback>
+                    </Avatar>
+                    <span className="flex-1 text-sm font-medium truncate">{entry.display_name}</span>
+                    <Badge variant="secondary" className="text-xs">
+                      <Star className="w-3 h-3 mr-1" /> {entry.xp} XP
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="border-border/50">
