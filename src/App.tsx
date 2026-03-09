@@ -30,6 +30,7 @@ import DashboardTasks from "./pages/DashboardTasks";
 import DashboardHistory from "./pages/DashboardHistory";
 import DashboardProfile from "./pages/DashboardProfile";
 import DashboardSettings from "./pages/DashboardSettings";
+import DashboardLeaderboard from "./pages/DashboardLeaderboard";
 
 // Role-specific dashboards
 import CreatorDashboard from "./pages/dashboard/creator/CreatorDashboard";
