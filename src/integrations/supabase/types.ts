@@ -660,6 +660,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_grant_xp: {
+        Args: { _amount: number; _reason: string; _target_user_id: string }
+        Returns: boolean
+      }
       get_top_xp_earners: {
         Args: { _limit?: number }
         Returns: {

@@ -2,13 +2,22 @@ import { useState } from 'react';
 import { AdminDashboardLayout } from '@/components/dashboard/role-layouts/AdminDashboardLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useQuery } from '@tanstack/react-query';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Search } from 'lucide-react';
+import { toast } from 'sonner';
+import { Search, Star, Gift } from 'lucide-react';
 
 export default function AdminUsers() {
   const [search, setSearch] = useState('');
+  const [grantTarget, setGrantTarget] = useState<{ userId: string; name: string } | null>(null);
+  const [grantAmount, setGrantAmount] = useState('');
+  const [grantReason, setGrantReason] = useState('');
+  const queryClient = useQueryClient();
 
   const { data: users, isLoading } = useQuery({
     queryKey: ['admin-users', search],
@@ -32,8 +41,38 @@ export default function AdminUsers() {
     },
   });
 
+  const grantXP = useMutation({
+    mutationFn: async ({ userId, amount, reason }: { userId: string; amount: number; reason: string }) => {
+      const { error } = await supabase.rpc('admin_grant_xp', {
+        _target_user_id: userId,
+        _amount: amount,
+        _reason: reason,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      toast.success(`Granted ${grantAmount} XP successfully`);
+      setGrantTarget(null);
+      setGrantAmount('');
+      setGrantReason('');
+    },
+    onError: (err: any) => {
+      toast.error(err.message || 'Failed to grant XP');
+    },
+  });
+
   const getRolesForUser = (userId: string) => {
     return allRoles?.filter(r => r.user_id === userId).map(r => r.role) || [];
+  };
+
+  const handleGrantXP = () => {
+    if (!grantTarget || !grantAmount || !grantReason) return;
+    grantXP.mutate({
+      userId: grantTarget.userId,
+      amount: parseInt(grantAmount),
+      reason: grantReason,
+    });
   };
 
   return (
@@ -68,7 +107,7 @@ export default function AdminUsers() {
                     <th className="text-left p-4 font-medium text-muted-foreground">Roles</th>
                     <th className="text-left p-4 font-medium text-muted-foreground">XP</th>
                     <th className="text-left p-4 font-medium text-muted-foreground">Onboarded</th>
-                    <th className="text-left p-4 font-medium text-muted-foreground">Joined</th>
+                    <th className="text-left p-4 font-medium text-muted-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -93,14 +132,24 @@ export default function AdminUsers() {
                             ))}
                           </div>
                         </td>
-                        <td className="p-4 font-medium">{u.xp || 0}</td>
+                        <td className="p-4">
+                          <span className="font-medium flex items-center gap-1">
+                            <Star className="w-3 h-3 text-primary" /> {u.xp || 0}
+                          </span>
+                        </td>
                         <td className="p-4">
                           <Badge variant={u.onboarding_completed ? 'default' : 'outline'}>
                             {u.onboarding_completed ? 'Yes' : 'No'}
                           </Badge>
                         </td>
-                        <td className="p-4 text-muted-foreground text-xs">
-                          {new Date(u.created_at).toLocaleDateString()}
+                        <td className="p-4">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setGrantTarget({ userId: u.user_id, name: u.display_name || u.email || 'User' })}
+                          >
+                            <Gift className="w-3 h-3 mr-1" /> Grant XP
+                          </Button>
                         </td>
                       </tr>
                     ))
@@ -113,6 +162,49 @@ export default function AdminUsers() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Grant XP Dialog */}
+      <Dialog open={!!grantTarget} onOpenChange={() => setGrantTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Gift className="w-5 h-5 text-primary" /> Grant XP
+            </DialogTitle>
+            <DialogDescription>
+              Award XP to <span className="font-medium text-foreground">{grantTarget?.name}</span>
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 pt-2">
+            <div>
+              <Label>Amount *</Label>
+              <Input
+                type="number"
+                min="1"
+                value={grantAmount}
+                onChange={(e) => setGrantAmount(e.target.value)}
+                placeholder="e.g. 100"
+              />
+            </div>
+            <div>
+              <Label>Reason *</Label>
+              <Textarea
+                value={grantReason}
+                onChange={(e) => setGrantReason(e.target.value)}
+                placeholder="Why are you granting this XP?"
+              />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setGrantTarget(null)}>Cancel</Button>
+              <Button
+                onClick={handleGrantXP}
+                disabled={!grantAmount || !grantReason || grantXP.isPending}
+              >
+                {grantXP.isPending ? 'Granting...' : `Grant ${grantAmount || '0'} XP`}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </AdminDashboardLayout>
   );
 }
