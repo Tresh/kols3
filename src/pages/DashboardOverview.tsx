@@ -140,11 +140,16 @@ export default function DashboardOverview() {
 
         {/* XP Leaderboard */}
         <Card className="border-border/50">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-primary" /> XP Leaderboard
-            </CardTitle>
-            <CardDescription>Top earners on the platform</CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-primary" /> XP Leaderboard
+              </CardTitle>
+              <CardDescription>Top earners on the platform</CardDescription>
+            </div>
+            <Button variant="ghost" size="sm" onClick={() => navigate('/dashboard/leaderboard')}>
+              View All <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
           </CardHeader>
           <CardContent>
             {leaderboardLoading ? (
