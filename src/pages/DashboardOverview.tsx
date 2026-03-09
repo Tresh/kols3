@@ -163,6 +163,12 @@ export default function DashboardOverview() {
             </Button>
           </CardHeader>
           <CardContent>
+            {myRank && myRank > 0 && (
+              <div className="flex items-center gap-2 p-2 mb-3 rounded-lg bg-primary/5 border border-primary/20">
+                <span className="text-sm text-muted-foreground">Your position:</span>
+                <span className="font-bold text-primary">#{myRank}</span>
+              </div>
+            )}
             {leaderboardLoading ? (
               <div className="flex justify-center py-8">
                 <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
