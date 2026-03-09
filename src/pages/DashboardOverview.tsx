@@ -30,6 +30,15 @@ export default function DashboardOverview() {
     enabled: !!user,
   });
 
+  const { data: leaderboard = [], isLoading: leaderboardLoading } = useQuery({
+    queryKey: ['xp-leaderboard'],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('get_top_xp_earners', { _limit: 10 });
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
   const activeTasks = tasks.filter(t => ['pending', 'in_progress'].includes(t.status));
   const completedCount = tasks.filter(t => t.status === 'approved').length;
 
