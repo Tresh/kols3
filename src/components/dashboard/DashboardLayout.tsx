@@ -26,7 +26,8 @@ import {
   LogOut,
   Menu,
   Briefcase,
-  History
+  History,
+  Trophy
 } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import logo from '@/assets/kols3-logo.png';
