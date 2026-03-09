@@ -58,6 +58,7 @@ function DashboardSidebar() {
   const { signOut, profile, roles } = useAuth();
   const navigate = useNavigate();
   const { state } = useSidebar();
+  const { theme } = useTheme();
   const collapsed = state === 'collapsed';
 
   const isCreator = roles.includes('creator') || roles.includes('kol') || roles.includes('ambassador');
