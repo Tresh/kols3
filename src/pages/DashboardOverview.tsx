@@ -39,6 +39,17 @@ export default function DashboardOverview() {
     },
   });
 
+  const { data: myRank } = useQuery({
+    queryKey: ['my-xp-rank', user?.id],
+    queryFn: async () => {
+      if (!user) return null;
+      const { data, error } = await supabase.rpc('get_user_xp_rank', { _user_id: user.id });
+      if (error) return null;
+      return data;
+    },
+    enabled: !!user,
+  });
+
   const activeTasks = tasks.filter(t => ['pending', 'in_progress'].includes(t.status));
   const completedCount = tasks.filter(t => t.status === 'approved').length;
 
