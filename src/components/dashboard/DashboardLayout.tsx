@@ -24,11 +24,12 @@ import {
   Megaphone, 
   Settings, 
   LogOut,
-  Star,
   Menu,
   Briefcase,
   History
 } from 'lucide-react';
+import { useTheme } from '@/components/ThemeProvider';
+import logo from '@/assets/kols3-logo.png';
 import { Button } from '@/components/ui/button';
 import { CreatorProfileModal } from './CreatorProfileModal';
 
