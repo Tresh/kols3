@@ -68,7 +68,7 @@ export default function DashboardSettings() {
     try {
       const { error } = await supabase.rpc('switch_user_role', {
         _user_id: user.id,
-        _new_role: newRole,
+        _new_role: newRole as any,
       });
 
       if (error) throw error;
