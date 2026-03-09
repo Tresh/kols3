@@ -660,9 +660,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_top_xp_earners: {
+        Args: { _limit?: number }
+        Returns: {
+          avatar_url: string
+          display_name: string
+          xp: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      switch_user_role: {
+        Args: {
+          _new_role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
