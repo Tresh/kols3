@@ -7,16 +7,28 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Code, Shield } from 'lucide-react';
 import { AvatarUpload } from '@/components/profile/AvatarUpload';
 
+const DEV_EMAIL = '555liltresh@gmail.com';
+
+const SWITCHABLE_ROLES = [
+  { value: 'creator', label: 'Creator', description: 'Content creator dashboard' },
+  { value: 'project', label: 'Project', description: 'Project/brand dashboard' },
+  { value: 'marketer', label: 'Marketer', description: 'Marketing agency dashboard' },
+] as const;
+
 export default function DashboardSettings() {
-  const { profile, user, refreshProfile } = useAuth();
+  const { profile, user, refreshProfile, roles } = useAuth();
   const { toast } = useToast();
   const [displayName, setDisplayName] = useState('');
   const [saving, setSaving] = useState(false);
+  const [switchingRole, setSwitchingRole] = useState(false);
+
+  const isDev = user?.email === DEV_EMAIL;
 
   useEffect(() => {
     if (profile?.display_name) {
@@ -49,6 +61,28 @@ export default function DashboardSettings() {
     }
   };
 
+  const handleSwitchRole = async (newRole: string) => {
+    if (!user) return;
+    setSwitchingRole(true);
+
+    try {
+      const { error } = await supabase.rpc('switch_user_role', {
+        _user_id: user.id,
+        _new_role: newRole,
+      });
+
+      if (error) throw error;
+
+      toast({ title: 'Role switched', description: `You are now a ${newRole}. Reloading...` });
+      // Reload to pick up new role
+      setTimeout(() => window.location.reload(), 1000);
+    } catch (error: any) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    } finally {
+      setSwitchingRole(false);
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-6 max-w-2xl">
@@ -61,7 +95,7 @@ export default function DashboardSettings() {
         <Card className="border-border/50">
           <CardHeader>
             <CardTitle>Profile Picture</CardTitle>
-            <CardDescription>Upload a profile picture (max 10MB, will be compressed)</CardDescription>
+            <CardDescription>Upload a profile picture (max 10MB)</CardDescription>
           </CardHeader>
           <CardContent className="flex items-center gap-6">
             <AvatarUpload 
@@ -134,6 +168,49 @@ export default function DashboardSettings() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Developer Mode - Only visible to dev email */}
+        {isDev && (
+          <Card className="border-primary/30 bg-primary/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Code className="w-5 h-5" /> Developer Mode
+                <Badge variant="outline" className="text-xs">
+                  <Shield className="w-3 h-3 mr-1" /> Restricted
+                </Badge>
+              </CardTitle>
+              <CardDescription>Switch between roles for testing purposes</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-muted-foreground mb-2">
+                Current role: <Badge variant="secondary">{roles[0] || 'none'}</Badge>
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {SWITCHABLE_ROLES.map((role) => {
+                  const isActive = roles.includes(role.value);
+                  return (
+                    <Button
+                      key={role.value}
+                      variant={isActive ? 'default' : 'outline'}
+                      className="flex flex-col h-auto py-3"
+                      disabled={switchingRole || isActive}
+                      onClick={() => handleSwitchRole(role.value)}
+                    >
+                      {switchingRole ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <>
+                          <span className="font-medium">{role.label}</span>
+                          <span className="text-xs opacity-70">{role.description}</span>
+                        </>
+                      )}
+                    </Button>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Danger Zone */}
         <Card className="border-destructive/50">
