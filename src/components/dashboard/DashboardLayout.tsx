@@ -50,6 +50,7 @@ const creatorMenuItems = [
 const projectMenuItems = [
   { title: 'Overview', url: '/dashboard', icon: LayoutDashboard, id: 'overview' },
   { title: 'Campaigns', url: '/dashboard/campaigns', icon: Megaphone, id: 'campaigns' },
+  { title: 'Tasks', url: '/dashboard/tasks', icon: CheckSquare, id: 'tasks' },
   { title: 'Settings', url: '/dashboard/settings', icon: Settings, id: 'settings' },
 ];
 
