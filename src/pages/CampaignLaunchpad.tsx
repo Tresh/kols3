@@ -489,11 +489,9 @@ const CampaignLaunchpad = () => {
             <p className="text-muted-foreground mb-8">
               Join the next generation of Web3 growth. No calls, no waiting, no BS.
             </p>
-            <Button variant="hero" size="lg" asChild>
-              <Link to="/contact">
-                Launch Your First Campaign
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+            <Button variant="hero" size="lg" onClick={() => { setLaunchType(undefined); setLaunchOpen(true); }}>
+              Launch Your First Campaign
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </section>
@@ -501,6 +499,7 @@ const CampaignLaunchpad = () => {
 
       <Footer />
       <ComingSoonModal open={comingSoonOpen} onOpenChange={setComingSoonOpen} />
+      <CreateCampaignDialog open={launchOpen} onOpenChange={setLaunchOpen} defaultType={launchType} />
     </div>
   );
 };
