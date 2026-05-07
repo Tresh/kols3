@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { ComingSoonModal } from "@/components/ComingSoonModal";
+
 import { UserMenu } from "@/components/layout/UserMenu";
 import logo from "@/assets/kols3-logo.png";
 import { useTheme } from "@/components/ThemeProvider";
@@ -28,7 +28,7 @@ const moreLinks = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  
   const location = useLocation();
   const { theme } = useTheme();
   const { user } = useAuth();
@@ -181,7 +181,7 @@ export const Navbar = () => {
           )}
         </div>
       </nav>
-      <ComingSoonModal open={comingSoonOpen} onOpenChange={setComingSoonOpen} />
+      
     </>
   );
 };
