@@ -392,11 +392,11 @@ export function CreatorProfileModal({ open, onComplete }: CreatorProfileModalPro
         </ScrollArea>
 
         {/* Navigation */}
-        <div className="flex items-center justify-between p-6 pt-0 border-t mt-4">
+        <div className="flex items-center justify-between gap-3 px-6 py-4 border-t">
           <Button variant="ghost" onClick={prevStep} disabled={step === 0}>
             <ArrowLeft className="w-4 h-4 mr-2" /> Back
           </Button>
-          
+
           {step === STEPS.length - 1 ? (
             <Button onClick={handleSubmit} disabled={!validateStep() || loading}>
               {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <CheckCircle className="w-4 h-4 mr-2" />}
