@@ -20,6 +20,7 @@ import { Label } from '@/components/ui/label';
 import { Megaphone, Plus, Calendar, Users, ListChecks } from 'lucide-react';
 import { toast } from 'sonner';
 import { CampaignTasksDialog } from '@/components/dashboard/CampaignTasksDialog';
+import { CreateCampaignDialog } from '@/components/campaigns/CreateCampaignDialog';
 
 export default function ProjectCampaigns() {
   const { user } = useAuth();
