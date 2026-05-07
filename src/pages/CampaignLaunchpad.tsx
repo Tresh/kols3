@@ -138,11 +138,9 @@ const CampaignLaunchpad = () => {
               through creators, ambassadors, and community systems.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="hero" size="lg" asChild>
-                <a href="#campaigns">
-                  Launch a Campaign
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
+              <Button variant="hero" size="lg" onClick={() => { setLaunchType(undefined); setLaunchOpen(true); }}>
+                Launch a Campaign
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button variant="outline" size="lg" asChild>
                 <a href="#campaigns">Explore Campaign Types</a>
