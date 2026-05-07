@@ -66,7 +66,7 @@ export default function ProjectCampaigns() {
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success('Campaign created!');
+      toast.success('Campaign submitted for admin approval!');
       setDialogOpen(false);
       setFormData({ title: '', description: '', type: 'ambassador', budgetTotal: '', maxParticipants: '' });
       refetch();
