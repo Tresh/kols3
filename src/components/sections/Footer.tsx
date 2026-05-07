@@ -90,7 +90,6 @@ export const Footer = () => {
                     >
                       {link.label}
                     </Link>
-                    )}
                   </li>
                 ))}
               </ul>
