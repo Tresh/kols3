@@ -249,7 +249,31 @@ export default function ProjectCampaigns() {
             </CardContent>
           </Card>
         )}
+        {pendingCampaigns.length > 0 && (
+          <Card className="border-border/50">
+            <CardHeader><CardTitle>Pending Admin Approval ({pendingCampaigns.length})</CardTitle></CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {pendingCampaigns.map((campaign) => (
+                  <div key={campaign.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+                    <div>
+                      <p className="font-medium">{campaign.title}</p>
+                      <p className="text-xs text-muted-foreground">{campaign.type}</p>
+                    </div>
+                    <Badge variant="secondary">Awaiting approval</Badge>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
+      <CampaignTasksDialog
+        campaignId={tasksFor?.id || null}
+        campaignTitle={tasksFor?.title}
+        open={!!tasksFor}
+        onOpenChange={(o) => !o && setTasksFor(null)}
+      />
     </ProjectDashboardLayout>
   );
 }
