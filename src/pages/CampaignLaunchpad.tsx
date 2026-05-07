@@ -204,6 +204,47 @@ const CampaignLaunchpad = () => {
           </div>
         </section>
 
+        {/* Live Campaigns from DB */}
+        {liveCampaigns && liveCampaigns.length > 0 && (
+          <section className="section-padding py-16 border-t border-border/50">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex items-end justify-between mb-8 flex-wrap gap-4">
+                <div>
+                  <h2 className="text-3xl font-black mb-2">Live Campaigns</h2>
+                  <p className="text-muted-foreground">Apply to active campaigns and earn XP</p>
+                </div>
+                <Badge variant="outline">{liveCampaigns.length} live</Badge>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {liveCampaigns.map((c: any) => (
+                  <Card key={c.id} className="border-border/50">
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge variant="outline">{c.type}</Badge>
+                        {c.budget_total && <Badge>${c.budget_total}</Badge>}
+                      </div>
+                      <CardTitle className="text-lg">{c.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground line-clamp-3 mb-4 min-h-[60px]">{c.description || 'No description'}</p>
+                      <Button
+                        className="w-full"
+                        disabled={apply.isPending}
+                        onClick={() => {
+                          if (!user) { navigate('/auth'); return; }
+                          apply.mutate(c.id);
+                        }}
+                      >
+                        {user ? 'Apply Now' : 'Sign in to Apply'}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Campaign Type Selector */}
         <section id="campaigns" className="section-padding py-20 bg-muted/30">
           <div className="max-w-7xl mx-auto">
