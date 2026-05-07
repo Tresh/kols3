@@ -187,7 +187,12 @@ export default function ProjectCampaigns() {
                           )}
                         </div>
                       </div>
-                      <Badge>Active</Badge>
+                      <div className="flex flex-col items-end gap-2">
+                        <Badge>Active</Badge>
+                        <Button size="sm" variant="outline" onClick={() => setTasksFor({ id: campaign.id, title: campaign.title })}>
+                          <ListChecks className="w-4 h-4 mr-1" />Tasks
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 ))}
