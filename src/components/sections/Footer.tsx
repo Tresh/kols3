@@ -5,7 +5,7 @@ import { Send, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/kols3-logo.png";
 import { useTheme } from "@/components/ThemeProvider";
-import { ComingSoonModal } from "@/components/ComingSoonModal";
+
 
 const footerLinks = {
   company: [
@@ -16,7 +16,7 @@ const footerLinks = {
     { label: "AI-Marketing", href: "/ai-marketing" },
     { label: "KOL Market", href: "/kol-market" },
     { label: "Ambassador Launchpad", href: "/ambassador-programs" },
-    { label: "Dashboards", href: "#", isDashboard: true },
+    { label: "Dashboards", href: "/auth" },
     { label: "Founder Network", href: "/founder-network" },
     { label: "KOL Campaigns", href: "/kol-campaigns" },
     { label: "Campus Programs", href: "/campus-programs" },
@@ -34,7 +34,7 @@ const socialLinks = [
 
 export const Footer = () => {
   const { theme } = useTheme();
-  const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  
 
   return (
     <footer id="contact" className="section-padding border-t border-border/50">
@@ -84,20 +84,12 @@ export const Footer = () => {
               <ul className="space-y-3">
                 {footerLinks.services.map((link) => (
                   <li key={link.label}>
-                    {link.isDashboard ? (
-                      <button
-                        onClick={() => setComingSoonOpen(true)}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        {link.label}
-                      </button>
-                    ) : (
-                      <Link 
-                        to={link.href} 
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        {link.label}
-                      </Link>
+                    <Link 
+                      to={link.href} 
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.label}
+                    </Link>
                     )}
                   </li>
                 ))}
@@ -160,7 +152,7 @@ export const Footer = () => {
           </div>
         </div>
       </div>
-      <ComingSoonModal open={comingSoonOpen} onOpenChange={setComingSoonOpen} />
+      
     </footer>
   );
 };

@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { ComingSoonModal } from "@/components/ComingSoonModal";
+
 import { CreateCampaignDialog } from "@/components/campaigns/CreateCampaignDialog";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -60,7 +60,7 @@ const proFeatures = [
 ];
 
 const CampaignLaunchpad = () => {
-  const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  
   const [launchOpen, setLaunchOpen] = useState(false);
   const [launchType, setLaunchType] = useState<string | undefined>(undefined);
   const { user } = useAuth();
@@ -345,7 +345,7 @@ const CampaignLaunchpad = () => {
                   </div>
                 </div>
 
-                <Button variant="hero" size="lg" className="w-full mt-8" onClick={() => setComingSoonOpen(true)}>
+                <Button variant="hero" size="lg" className="w-full mt-8" onClick={() => navigate('/ai-marketing')}>
                   <Sparkles className="mr-2 h-5 w-5" />
                   Generate Campaign Plan
                 </Button>
@@ -498,7 +498,7 @@ const CampaignLaunchpad = () => {
       </main>
 
       <Footer />
-      <ComingSoonModal open={comingSoonOpen} onOpenChange={setComingSoonOpen} />
+      
       <CreateCampaignDialog open={launchOpen} onOpenChange={setLaunchOpen} defaultType={launchType} />
     </div>
   );
