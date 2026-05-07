@@ -61,11 +61,8 @@ export default function ProjectCampaigns() {
           type: formData.type,
           budget_total: formData.budgetTotal ? parseFloat(formData.budgetTotal) : null,
           max_participants: formData.maxParticipants ? parseInt(formData.maxParticipants) : null,
-          status: 'draft',
+          status: 'pending_approval',
         });
-
-      if (error) throw error;
-    },
     onSuccess: () => {
       toast.success('Campaign created!');
       setDialogOpen(false);
