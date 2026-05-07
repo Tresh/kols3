@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import { 
   Users, GraduationCap, UserPlus, Globe, Share2, Calendar, MessageSquare, Megaphone,
   ArrowRight, Sparkles, BarChart3, Zap, Bot, Wallet, TrendingUp, Target, Clock,
-  FileCheck, CreditCard
+  FileCheck, CreditCard, CheckCircle, XCircle
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
