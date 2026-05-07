@@ -211,12 +211,14 @@ const CampaignLaunchpad = () => {
                     <CardDescription className="mb-6 min-h-[80px]">
                       {campaign.description}
                     </CardDescription>
-                    <Button variant="outline" className="w-full text-xs sm:text-sm whitespace-normal h-auto py-2" asChild>
-                      <Link to={campaign.href}>
-                        {campaign.cta}
-                        <ArrowRight className="ml-2 h-4 w-4 shrink-0" />
-                      </Link>
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button className="flex-1 text-xs sm:text-sm" onClick={() => { setLaunchType(campaign.id); setLaunchOpen(true); }}>
+                        Launch
+                      </Button>
+                      <Button variant="outline" className="flex-1 text-xs sm:text-sm" asChild>
+                        <Link to={campaign.learnHref}>Learn more</Link>
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
