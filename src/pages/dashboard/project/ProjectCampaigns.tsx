@@ -17,8 +17,9 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Megaphone, Plus, Calendar, Users } from 'lucide-react';
+import { Megaphone, Plus, Calendar, Users, ListChecks } from 'lucide-react';
 import { toast } from 'sonner';
+import { CampaignTasksDialog } from '@/components/dashboard/CampaignTasksDialog';
 
 export default function ProjectCampaigns() {
   const { user } = useAuth();
