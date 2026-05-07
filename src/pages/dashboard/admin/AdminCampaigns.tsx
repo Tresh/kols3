@@ -13,6 +13,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Search, Trash2, Plus, ListChecks, Check, X } from 'lucide-react';
 import { CampaignTasksDialog } from '@/components/dashboard/CampaignTasksDialog';
+import { CreateCampaignDialog } from '@/components/campaigns/CreateCampaignDialog';
 
 const statusOptions = ['draft', 'pending_approval', 'approved', 'active', 'paused', 'completed', 'rejected'];
 
@@ -96,34 +97,8 @@ export default function AdminCampaigns() {
           <div className="flex items-center gap-2">
             <Badge variant="outline">{campaigns?.length || 0} total</Badge>
             {pending.length > 0 && <Badge>{pending.length} pending</Badge>}
-            <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-              <DialogTrigger asChild>
-                <Button><Plus className="w-4 h-4 mr-2" />Create Campaign</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create Campaign</DialogTitle>
-                  <DialogDescription>This will be published live immediately.</DialogDescription>
-                </DialogHeader>
-                <div className="space-y-3">
-                  <div><Label>Title *</Label><Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div>
-                  <div><Label>Description</Label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <Label>Type</Label>
-                      <select className="h-10 w-full rounded-md border border-input bg-background px-3" value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}>
-                        {['ambassador','kol','social','community','events','onboarding','geo','campus'].map(t => <option key={t} value={t}>{t}</option>)}
-                      </select>
-                    </div>
-                    <div><Label>Budget USD</Label><Input type="number" value={form.budget_total} onChange={(e) => setForm({ ...form, budget_total: e.target.value })} /></div>
-                  </div>
-                  <div><Label>Max Participants</Label><Input type="number" value={form.max_participants} onChange={(e) => setForm({ ...form, max_participants: e.target.value })} /></div>
-                  <Button className="w-full" onClick={() => createCampaign.mutate()} disabled={!form.title || createCampaign.isPending}>
-                    {createCampaign.isPending ? 'Creating...' : 'Create & Publish'}
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <Button onClick={() => setCreateOpen(true)}><Plus className="w-4 h-4 mr-2" />Create Campaign</Button>
+            <CreateCampaignDialog open={createOpen} onOpenChange={setCreateOpen} asAdmin onCreated={() => queryClient.invalidateQueries({ queryKey: ['admin-campaigns'] })} />
           </div>
         </div>
 

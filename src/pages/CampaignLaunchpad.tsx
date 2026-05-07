@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { ComingSoonModal } from "@/components/ComingSoonModal";
+import { CreateCampaignDialog } from "@/components/campaigns/CreateCampaignDialog";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -20,70 +21,14 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 const campaignTypes = [
-  {
-    id: "ambassador",
-    title: "Ambassador Program Launchpad",
-    description: "Launch a fully automated ambassador program with recruitment, onboarding, task assignment, performance tracking, and payouts.",
-    icon: Users,
-    cta: "Launch Program",
-    href: "/ambassador-programs",
-  },
-  {
-    id: "campus",
-    title: "Campus Ambassador Launchpad",
-    description: "Activate universities, student communities, and offline grassroots adoption through structured campus programs.",
-    icon: GraduationCap,
-    cta: "Launch Campus Program",
-    href: "/campus-programs",
-  },
-  {
-    id: "onboarding",
-    title: "User Onboarding Campaign",
-    description: "Drive real users into your app, protocol, or platform using creator funnels, referral loops, and guided onboarding systems.",
-    icon: UserPlus,
-    cta: "Launch Onboarding",
-    href: "/contact",
-  },
-  {
-    id: "geo",
-    title: "Geo-Expansion Campaign",
-    description: "Expand into new countries and regions using localized KOLs, ambassadors, and community activation.",
-    icon: Globe,
-    cta: "Expand to New Regions",
-    href: "/contact",
-  },
-  {
-    id: "social",
-    title: "Social Growth Campaign",
-    description: "Grow your social presence across X, TikTok, YouTube, Telegram, and Discord through creator-led systems.",
-    icon: Share2,
-    cta: "Grow Socials",
-    href: "/contact",
-  },
-  {
-    id: "events",
-    title: "IRL & Virtual Events",
-    description: "Launch online or offline activations including AMAs, campus meetups, hackathons, community dinners, and demo days.",
-    icon: Calendar,
-    cta: "Launch Event",
-    href: "/events",
-  },
-  {
-    id: "community",
-    title: "Community Activation Campaign",
-    description: "Reignite dormant communities, boost engagement, and turn members into active users.",
-    icon: MessageSquare,
-    cta: "Activate Community",
-    href: "/contact",
-  },
-  {
-    id: "kol",
-    title: "KOL Amplification Campaign",
-    description: "Deploy verified KOLs for awareness, conversions, or education.",
-    icon: Megaphone,
-    cta: "Hire KOLs",
-    href: "/kol-market",
-  },
+  { id: "ambassador", title: "Ambassador Program Launchpad", description: "Launch a fully automated ambassador program with recruitment, onboarding, task assignment, performance tracking, and payouts.", icon: Users, learnHref: "/ambassador-programs" },
+  { id: "campus", title: "Campus Ambassador Launchpad", description: "Activate universities, student communities, and offline grassroots adoption through structured campus programs.", icon: GraduationCap, learnHref: "/campus-programs" },
+  { id: "onboarding", title: "User Onboarding Campaign", description: "Drive real users into your app, protocol, or platform using creator funnels, referral loops, and guided onboarding systems.", icon: UserPlus, learnHref: "/contact" },
+  { id: "geo", title: "Geo-Expansion Campaign", description: "Expand into new countries and regions using localized KOLs, ambassadors, and community activation.", icon: Globe, learnHref: "/contact" },
+  { id: "social", title: "Social Growth Campaign", description: "Grow your social presence across X, TikTok, YouTube, Telegram, and Discord through creator-led systems.", icon: Share2, learnHref: "/contact" },
+  { id: "events", title: "IRL & Virtual Events", description: "Launch online or offline activations including AMAs, campus meetups, hackathons, community dinners, and demo days.", icon: Calendar, learnHref: "/events" },
+  { id: "community", title: "Community Activation Campaign", description: "Reignite dormant communities, boost engagement, and turn members into active users.", icon: MessageSquare, learnHref: "/contact" },
+  { id: "kol", title: "KOL Amplification Campaign", description: "Deploy verified KOLs for awareness, conversions, or education.", icon: Megaphone, learnHref: "/kol-market" },
 ];
 
 const launchSteps = [
@@ -116,6 +61,8 @@ const proFeatures = [
 
 const CampaignLaunchpad = () => {
   const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  const [launchOpen, setLaunchOpen] = useState(false);
+  const [launchType, setLaunchType] = useState<string | undefined>(undefined);
   const { user } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
@@ -191,11 +138,9 @@ const CampaignLaunchpad = () => {
               through creators, ambassadors, and community systems.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="hero" size="lg" asChild>
-                <a href="#campaigns">
-                  Launch a Campaign
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
+              <Button variant="hero" size="lg" onClick={() => { setLaunchType(undefined); setLaunchOpen(true); }}>
+                Launch a Campaign
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button variant="outline" size="lg" asChild>
                 <a href="#campaigns">Explore Campaign Types</a>
@@ -267,12 +212,14 @@ const CampaignLaunchpad = () => {
                     <CardDescription className="mb-6 min-h-[80px]">
                       {campaign.description}
                     </CardDescription>
-                    <Button variant="outline" className="w-full text-xs sm:text-sm whitespace-normal h-auto py-2" asChild>
-                      <Link to={campaign.href}>
-                        {campaign.cta}
-                        <ArrowRight className="ml-2 h-4 w-4 shrink-0" />
-                      </Link>
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button className="flex-1 text-xs sm:text-sm" onClick={() => { setLaunchType(campaign.id); setLaunchOpen(true); }}>
+                        Launch
+                      </Button>
+                      <Button variant="outline" className="flex-1 text-xs sm:text-sm" asChild>
+                        <Link to={campaign.learnHref}>Learn more</Link>
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -542,11 +489,9 @@ const CampaignLaunchpad = () => {
             <p className="text-muted-foreground mb-8">
               Join the next generation of Web3 growth. No calls, no waiting, no BS.
             </p>
-            <Button variant="hero" size="lg" asChild>
-              <Link to="/contact">
-                Launch Your First Campaign
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+            <Button variant="hero" size="lg" onClick={() => { setLaunchType(undefined); setLaunchOpen(true); }}>
+              Launch Your First Campaign
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </section>
@@ -554,6 +499,7 @@ const CampaignLaunchpad = () => {
 
       <Footer />
       <ComingSoonModal open={comingSoonOpen} onOpenChange={setComingSoonOpen} />
+      <CreateCampaignDialog open={launchOpen} onOpenChange={setLaunchOpen} defaultType={launchType} />
     </div>
   );
 };
