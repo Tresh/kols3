@@ -25,6 +25,7 @@ export default function ProjectCampaigns() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [tasksFor, setTasksFor] = useState<{ id: string; title: string } | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
