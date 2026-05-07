@@ -116,6 +116,9 @@ const proFeatures = [
 
 const CampaignLaunchpad = () => {
   const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const qc = useQueryClient();
   const [formData, setFormData] = useState({
     campaignType: "",
     productType: "",
@@ -123,6 +126,52 @@ const CampaignLaunchpad = () => {
     budget: "",
     region: "",
     goal: "",
+  });
+
+  const { data: liveCampaigns } = useQuery({
+    queryKey: ['live-campaigns'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('campaigns')
+        .select('*')
+        .in('status', ['active', 'approved'])
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .limit(12);
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const apply = useMutation({
+    mutationFn: async (campaignId: string) => {
+      if (!user) throw new Error('Sign in to apply');
+      const { error } = await supabase.from('campaign_participants').insert({
+        campaign_id: campaignId,
+        user_id: user.id,
+        status: 'applied',
+      });
+      if (error) throw error;
+      // Notify campaign owner
+      const owner = liveCampaigns?.find(c => c.id === campaignId)?.owner_user_id;
+      if (owner) {
+        await supabase.from('notifications').insert({
+          user_id: owner,
+          type: 'campaign_application',
+          title: 'New campaign applicant',
+          message: 'A creator just applied to your campaign.',
+          link: '/dashboard',
+        });
+      }
+    },
+    onSuccess: () => {
+      toast.success('Application submitted!');
+      qc.invalidateQueries({ queryKey: ['live-campaigns'] });
+    },
+    onError: (e: any) => {
+      if (e.message?.includes('duplicate')) toast.info('You already applied');
+      else toast.error(e.message);
+    },
   });
 
   return (
