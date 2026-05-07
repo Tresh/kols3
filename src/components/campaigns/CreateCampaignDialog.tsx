@@ -73,7 +73,7 @@ export function CreateCampaignDialog({ open, onOpenChange, defaultType, asAdmin,
         max_participants: form.max_participants ? parseInt(form.max_participants) : null,
         status: asAdmin ? 'active' : 'pending_approval',
         is_public: true,
-        metadata: Object.keys(meta).length ? meta : null,
+        requirements: Object.keys(meta).length ? meta : null,
       } as any);
       if (error) throw error;
     },
