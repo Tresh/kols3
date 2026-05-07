@@ -13,6 +13,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Search, Trash2, Plus, ListChecks, Check, X } from 'lucide-react';
 import { CampaignTasksDialog } from '@/components/dashboard/CampaignTasksDialog';
+import { CreateCampaignDialog } from '@/components/campaigns/CreateCampaignDialog';
 
 const statusOptions = ['draft', 'pending_approval', 'approved', 'active', 'paused', 'completed', 'rejected'];
 
