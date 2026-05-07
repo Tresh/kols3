@@ -17,13 +17,15 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Megaphone, Plus, Calendar, Users } from 'lucide-react';
+import { Megaphone, Plus, Calendar, Users, ListChecks } from 'lucide-react';
 import { toast } from 'sonner';
+import { CampaignTasksDialog } from '@/components/dashboard/CampaignTasksDialog';
 
 export default function ProjectCampaigns() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [tasksFor, setTasksFor] = useState<{ id: string; title: string } | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -59,13 +61,12 @@ export default function ProjectCampaigns() {
           type: formData.type,
           budget_total: formData.budgetTotal ? parseFloat(formData.budgetTotal) : null,
           max_participants: formData.maxParticipants ? parseInt(formData.maxParticipants) : null,
-          status: 'draft',
+          status: 'pending_approval',
         });
-
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success('Campaign created!');
+      toast.success('Campaign submitted for admin approval!');
       setDialogOpen(false);
       setFormData({ title: '', description: '', type: 'ambassador', budgetTotal: '', maxParticipants: '' });
       refetch();
@@ -75,8 +76,9 @@ export default function ProjectCampaigns() {
     },
   });
 
-  const activeCampaigns = campaigns?.filter(c => c.status === 'active') || [];
-  const draftCampaigns = campaigns?.filter(c => c.status === 'draft') || [];
+  const activeCampaigns = campaigns?.filter(c => c.status === 'active' || c.status === 'approved') || [];
+  const pendingCampaigns = campaigns?.filter(c => c.status === 'pending_approval') || [];
+  const draftCampaigns = campaigns?.filter(c => c.status === 'draft' || c.status === 'rejected') || [];
   const completedCampaigns = campaigns?.filter(c => c.status === 'completed') || [];
 
   return (
@@ -185,7 +187,12 @@ export default function ProjectCampaigns() {
                           )}
                         </div>
                       </div>
-                      <Badge>Active</Badge>
+                      <div className="flex flex-col items-end gap-2">
+                        <Badge>Active</Badge>
+                        <Button size="sm" variant="outline" onClick={() => setTasksFor({ id: campaign.id, title: campaign.title })}>
+                          <ListChecks className="w-4 h-4 mr-1" />Tasks
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -242,7 +249,31 @@ export default function ProjectCampaigns() {
             </CardContent>
           </Card>
         )}
+        {pendingCampaigns.length > 0 && (
+          <Card className="border-border/50">
+            <CardHeader><CardTitle>Pending Admin Approval ({pendingCampaigns.length})</CardTitle></CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {pendingCampaigns.map((campaign) => (
+                  <div key={campaign.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+                    <div>
+                      <p className="font-medium">{campaign.title}</p>
+                      <p className="text-xs text-muted-foreground">{campaign.type}</p>
+                    </div>
+                    <Badge variant="secondary">Awaiting approval</Badge>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
+      <CampaignTasksDialog
+        campaignId={tasksFor?.id || null}
+        campaignTitle={tasksFor?.title}
+        open={!!tasksFor}
+        onOpenChange={(o) => !o && setTasksFor(null)}
+      />
     </ProjectDashboardLayout>
   );
 }

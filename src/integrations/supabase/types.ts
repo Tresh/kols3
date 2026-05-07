@@ -660,6 +660,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_get_user_email: { Args: { _user_id: string }; Returns: string }
       admin_grant_xp: {
         Args: { _amount: number; _reason: string; _target_user_id: string }
         Returns: boolean

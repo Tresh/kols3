@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Dialog,
   DialogContent,
@@ -67,22 +68,50 @@ export function CreateOfferDialog({ creator, open, onOpenChange }: CreateOfferDi
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      toast.error("Please sign in to send an offer");
+      return;
+    }
     if (!campaignDescription.trim()) {
       toast.error("Please describe your campaign");
       return;
     }
+    if (!creator) return;
 
     setIsSubmitting(true);
-    
-    // For now, just show a success message since offers table doesn't exist yet
-    setTimeout(() => {
+    try {
+      const budgetNum = parseFloat(budget.replace(/[^0-9.]/g, '')) || null;
+      const { data: offer, error } = await supabase.from('offers').insert({
+        creator_id: creator.id,
+        project_user_id: user.id,
+        title: campaignDescription.slice(0, 80),
+        description: `${campaignDescription}\n\n${notes ? 'Notes: ' + notes : ''}`.trim(),
+        budget_amount: budgetNum,
+        deadline: timelineEnd ? new Date(timelineEnd).toISOString() : null,
+        deliverables: selectedDeliverables,
+        status: 'pending',
+      }).select().single();
+      if (error) throw error;
+
+      // Notify the creator
+      await supabase.from('notifications').insert({
+        user_id: creator.user_id,
+        type: 'offer',
+        title: 'New offer received',
+        message: `You received a new collaboration offer${budgetNum ? ` worth $${budgetNum}` : ''}.`,
+        link: '/dashboard/creator/offers',
+      });
+
       toast.success("Offer sent!", {
-        description: `Your offer has been sent to ${creator?.display_name || "the creator"}. They'll be notified soon.`,
+        description: `${creator.display_name || "The creator"} will be notified in their dashboard.`,
       });
       onOpenChange(false);
       resetForm();
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to send offer');
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   if (!creator) return null;

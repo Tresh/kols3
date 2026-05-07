@@ -6,32 +6,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { ComingSoonModal } from "@/components/ComingSoonModal";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 import { 
-  Users, 
-  GraduationCap, 
-  UserPlus, 
-  Globe, 
-  Share2, 
-  Calendar, 
-  MessageSquare, 
-  Megaphone,
-  ArrowRight,
-  Sparkles,
-  CheckCircle,
-  XCircle,
-  BarChart3,
-  Shield,
-  Zap,
-  Bot,
-  Wallet,
-  TrendingUp,
-  Target,
-  Clock,
-  FileCheck,
-  CreditCard
+  Users, GraduationCap, UserPlus, Globe, Share2, Calendar, MessageSquare, Megaphone,
+  ArrowRight, Sparkles, BarChart3, Zap, Bot, Wallet, TrendingUp, Target, Clock,
+  FileCheck, CreditCard, CheckCircle, XCircle
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const campaignTypes = [
   {
@@ -130,6 +116,9 @@ const proFeatures = [
 
 const CampaignLaunchpad = () => {
   const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const qc = useQueryClient();
   const [formData, setFormData] = useState({
     campaignType: "",
     productType: "",
@@ -137,6 +126,52 @@ const CampaignLaunchpad = () => {
     budget: "",
     region: "",
     goal: "",
+  });
+
+  const { data: liveCampaigns } = useQuery({
+    queryKey: ['live-campaigns'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('campaigns')
+        .select('*')
+        .in('status', ['active', 'approved'])
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .limit(12);
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const apply = useMutation({
+    mutationFn: async (campaignId: string) => {
+      if (!user) throw new Error('Sign in to apply');
+      const { error } = await supabase.from('campaign_participants').insert({
+        campaign_id: campaignId,
+        user_id: user.id,
+        status: 'applied',
+      });
+      if (error) throw error;
+      // Notify campaign owner
+      const owner = liveCampaigns?.find(c => c.id === campaignId)?.owner_user_id;
+      if (owner) {
+        await supabase.from('notifications').insert({
+          user_id: owner,
+          type: 'campaign_application',
+          title: 'New campaign applicant',
+          message: 'A creator just applied to your campaign.',
+          link: '/dashboard',
+        });
+      }
+    },
+    onSuccess: () => {
+      toast.success('Application submitted!');
+      qc.invalidateQueries({ queryKey: ['live-campaigns'] });
+    },
+    onError: (e: any) => {
+      if (e.message?.includes('duplicate')) toast.info('You already applied');
+      else toast.error(e.message);
+    },
   });
 
   return (
@@ -168,6 +203,47 @@ const CampaignLaunchpad = () => {
             </div>
           </div>
         </section>
+
+        {/* Live Campaigns from DB */}
+        {liveCampaigns && liveCampaigns.length > 0 && (
+          <section className="section-padding py-16 border-t border-border/50">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex items-end justify-between mb-8 flex-wrap gap-4">
+                <div>
+                  <h2 className="text-3xl font-black mb-2">Live Campaigns</h2>
+                  <p className="text-muted-foreground">Apply to active campaigns and earn XP</p>
+                </div>
+                <Badge variant="outline">{liveCampaigns.length} live</Badge>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {liveCampaigns.map((c: any) => (
+                  <Card key={c.id} className="border-border/50">
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge variant="outline">{c.type}</Badge>
+                        {c.budget_total && <Badge>${c.budget_total}</Badge>}
+                      </div>
+                      <CardTitle className="text-lg">{c.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground line-clamp-3 mb-4 min-h-[60px]">{c.description || 'No description'}</p>
+                      <Button
+                        className="w-full"
+                        disabled={apply.isPending}
+                        onClick={() => {
+                          if (!user) { navigate('/auth'); return; }
+                          apply.mutate(c.id);
+                        }}
+                      >
+                        {user ? 'Apply Now' : 'Sign in to Apply'}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Campaign Type Selector */}
         <section id="campaigns" className="section-padding py-20 bg-muted/30">
