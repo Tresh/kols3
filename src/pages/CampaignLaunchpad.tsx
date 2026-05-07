@@ -6,32 +6,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { ComingSoonModal } from "@/components/ComingSoonModal";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 import { 
-  Users, 
-  GraduationCap, 
-  UserPlus, 
-  Globe, 
-  Share2, 
-  Calendar, 
-  MessageSquare, 
-  Megaphone,
-  ArrowRight,
-  Sparkles,
-  CheckCircle,
-  XCircle,
-  BarChart3,
-  Shield,
-  Zap,
-  Bot,
-  Wallet,
-  TrendingUp,
-  Target,
-  Clock,
-  FileCheck,
-  CreditCard
+  Users, GraduationCap, UserPlus, Globe, Share2, Calendar, MessageSquare, Megaphone,
+  ArrowRight, Sparkles, BarChart3, Zap, Bot, Wallet, TrendingUp, Target, Clock,
+  FileCheck, CreditCard
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const campaignTypes = [
   {
