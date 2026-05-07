@@ -89,76 +89,10 @@ export default function ProjectCampaigns() {
             <h1 className="text-2xl font-bold">Campaign Management</h1>
             <p className="text-muted-foreground">Create and manage your marketing campaigns</p>
           </div>
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" /> Create Campaign
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Create New Campaign</DialogTitle>
-                <DialogDescription>
-                  Set up a new marketing campaign
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4 mt-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Campaign Title *</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                    placeholder="e.g., Ambassador Program Q1"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                    placeholder="Describe the campaign..."
-                    rows={3}
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="budgetTotal">Budget (USD)</Label>
-                    <Input
-                      id="budgetTotal"
-                      type="number"
-                      value={formData.budgetTotal}
-                      onChange={(e) => setFormData(prev => ({ ...prev, budgetTotal: e.target.value }))}
-                      placeholder="5000"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="maxParticipants">Max Participants</Label>
-                    <Input
-                      id="maxParticipants"
-                      type="number"
-                      value={formData.maxParticipants}
-                      onChange={(e) => setFormData(prev => ({ ...prev, maxParticipants: e.target.value }))}
-                      placeholder="50"
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => setDialogOpen(false)} className="flex-1">
-                    Cancel
-                  </Button>
-                  <Button 
-                    onClick={() => createCampaign.mutate()} 
-                    disabled={!formData.title || createCampaign.isPending} 
-                    className="flex-1"
-                  >
-                    {createCampaign.isPending ? 'Creating...' : 'Create'}
-                  </Button>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <Button onClick={() => setDialogOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" /> Create Campaign
+          </Button>
+          <CreateCampaignDialog open={dialogOpen} onOpenChange={setDialogOpen} onCreated={() => refetch()} />
         </div>
 
         <Card className="border-border/50">
