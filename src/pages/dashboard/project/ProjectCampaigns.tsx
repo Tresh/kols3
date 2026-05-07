@@ -76,8 +76,9 @@ export default function ProjectCampaigns() {
     },
   });
 
-  const activeCampaigns = campaigns?.filter(c => c.status === 'active') || [];
-  const draftCampaigns = campaigns?.filter(c => c.status === 'draft') || [];
+  const activeCampaigns = campaigns?.filter(c => c.status === 'active' || c.status === 'approved') || [];
+  const pendingCampaigns = campaigns?.filter(c => c.status === 'pending_approval') || [];
+  const draftCampaigns = campaigns?.filter(c => c.status === 'draft' || c.status === 'rejected') || [];
   const completedCampaigns = campaigns?.filter(c => c.status === 'completed') || [];
 
   return (
