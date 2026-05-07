@@ -20,70 +20,14 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 const campaignTypes = [
-  {
-    id: "ambassador",
-    title: "Ambassador Program Launchpad",
-    description: "Launch a fully automated ambassador program with recruitment, onboarding, task assignment, performance tracking, and payouts.",
-    icon: Users,
-    cta: "Launch Program",
-    href: "/ambassador-programs",
-  },
-  {
-    id: "campus",
-    title: "Campus Ambassador Launchpad",
-    description: "Activate universities, student communities, and offline grassroots adoption through structured campus programs.",
-    icon: GraduationCap,
-    cta: "Launch Campus Program",
-    href: "/campus-programs",
-  },
-  {
-    id: "onboarding",
-    title: "User Onboarding Campaign",
-    description: "Drive real users into your app, protocol, or platform using creator funnels, referral loops, and guided onboarding systems.",
-    icon: UserPlus,
-    cta: "Launch Onboarding",
-    href: "/contact",
-  },
-  {
-    id: "geo",
-    title: "Geo-Expansion Campaign",
-    description: "Expand into new countries and regions using localized KOLs, ambassadors, and community activation.",
-    icon: Globe,
-    cta: "Expand to New Regions",
-    href: "/contact",
-  },
-  {
-    id: "social",
-    title: "Social Growth Campaign",
-    description: "Grow your social presence across X, TikTok, YouTube, Telegram, and Discord through creator-led systems.",
-    icon: Share2,
-    cta: "Grow Socials",
-    href: "/contact",
-  },
-  {
-    id: "events",
-    title: "IRL & Virtual Events",
-    description: "Launch online or offline activations including AMAs, campus meetups, hackathons, community dinners, and demo days.",
-    icon: Calendar,
-    cta: "Launch Event",
-    href: "/events",
-  },
-  {
-    id: "community",
-    title: "Community Activation Campaign",
-    description: "Reignite dormant communities, boost engagement, and turn members into active users.",
-    icon: MessageSquare,
-    cta: "Activate Community",
-    href: "/contact",
-  },
-  {
-    id: "kol",
-    title: "KOL Amplification Campaign",
-    description: "Deploy verified KOLs for awareness, conversions, or education.",
-    icon: Megaphone,
-    cta: "Hire KOLs",
-    href: "/kol-market",
-  },
+  { id: "ambassador", title: "Ambassador Program Launchpad", description: "Launch a fully automated ambassador program with recruitment, onboarding, task assignment, performance tracking, and payouts.", icon: Users, learnHref: "/ambassador-programs" },
+  { id: "campus", title: "Campus Ambassador Launchpad", description: "Activate universities, student communities, and offline grassroots adoption through structured campus programs.", icon: GraduationCap, learnHref: "/campus-programs" },
+  { id: "onboarding", title: "User Onboarding Campaign", description: "Drive real users into your app, protocol, or platform using creator funnels, referral loops, and guided onboarding systems.", icon: UserPlus, learnHref: "/contact" },
+  { id: "geo", title: "Geo-Expansion Campaign", description: "Expand into new countries and regions using localized KOLs, ambassadors, and community activation.", icon: Globe, learnHref: "/contact" },
+  { id: "social", title: "Social Growth Campaign", description: "Grow your social presence across X, TikTok, YouTube, Telegram, and Discord through creator-led systems.", icon: Share2, learnHref: "/contact" },
+  { id: "events", title: "IRL & Virtual Events", description: "Launch online or offline activations including AMAs, campus meetups, hackathons, community dinners, and demo days.", icon: Calendar, learnHref: "/events" },
+  { id: "community", title: "Community Activation Campaign", description: "Reignite dormant communities, boost engagement, and turn members into active users.", icon: MessageSquare, learnHref: "/contact" },
+  { id: "kol", title: "KOL Amplification Campaign", description: "Deploy verified KOLs for awareness, conversions, or education.", icon: Megaphone, learnHref: "/kol-market" },
 ];
 
 const launchSteps = [
