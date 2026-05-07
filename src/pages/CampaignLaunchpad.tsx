@@ -60,6 +60,8 @@ const proFeatures = [
 
 const CampaignLaunchpad = () => {
   const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  const [launchOpen, setLaunchOpen] = useState(false);
+  const [launchType, setLaunchType] = useState<string | undefined>(undefined);
   const { user } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
